@@ -1,0 +1,15 @@
+# Local credentials
+.apikey
+.env
+.env.*
+!.env.example
+
+# Python runtime and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Local logs
+*.log

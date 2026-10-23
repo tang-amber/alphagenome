@@ -1,0 +1,4 @@
+alphagenome==0.10.0
+fastapi>=0.115,<1
+uvicorn>=0.30,<1
+httpx>=0.27,<1
