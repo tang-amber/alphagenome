@@ -13,3 +13,8 @@ venv/
 
 # Local logs
 *.log
+!Dockerfile
+!requirements.txt
+!server.py
+!static/
+!static/**

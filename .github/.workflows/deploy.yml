@@ -1,0 +1,103 @@
+name: Deploy AlphaGenome
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alphagenome-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run offline tests
+        env:
+          ALPHA_GENOME_API_KEY: ""
+          PUBLIC_ORIGIN: ""
+        run: python test_pipeline.py
+
+      - name: Test HTTP access restrictions
+        env:
+          ALPHA_GENOME_API_KEY: ""
+          PUBLIC_ORIGIN: "http://203.0.113.10:18080"
+        run: |
+          python - <<'PY'
+          from fastapi.testclient import TestClient
+          from server import app
+
+          origin = "http://203.0.113.10:18080"
+
+          cases = [
+              ({}, 200),
+              ({"origin": origin}, 200),
+              ({"origin": "http://evil.example"}, 403),
+              ({"origin": "http://203.0.113.10:8081"}, 403),
+              ({"host": "evil.example"}, 400),
+              ({"sec-fetch-site": "cross-site"}, 403),
+          ]
+
+          with TestClient(app, base_url=origin) as client:
+              for headers, expected in cases:
+                  response = client.get("/api/health", headers=headers)
+                  assert response.status_code == expected, (
+                      headers, response.status_code, expected
+                  )
+
+          print("HTTP access checks passed")
+          PY
+
+      - name: Upload and deploy
+        shell: bash
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+
+          key="$RUNNER_TEMP/deploy_key"
+          hosts="$RUNNER_TEMP/deploy_known_hosts"
+          bundle="$(mktemp -d "$RUNNER_TEMP/alphagenome-app.XXXXXX")"
+
+          trap 'rm -f "$key" "$hosts"' EXIT
+
+          umask 077
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$hosts"
+
+          cp server.py requirements.txt "$bundle/"
+          cp -R static "$bundle/"
+
+          ssh_cmd="ssh -i $key -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$hosts"
+
+          rsync -az --delete \
+            -e "$ssh_cmd" \
+            "$bundle/" \
+            "$DEPLOY_USER@$DEPLOY_HOST:/opt/alphagenome/incoming/"
+
+          ssh -i "$key" \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$hosts" \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            /opt/alphagenome/deploy-python.sh

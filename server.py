@@ -582,11 +582,23 @@ app = FastAPI(title="AlphaGenome Web Console", version="1.0.0")
 def _local_origin(value: str) -> Optional[tuple[str, str, int]]:
     try:
         parsed = urlsplit(value)
-        if (parsed.scheme not in ("http", "https") or parsed.hostname not in ("localhost", "127.0.0.1")
+        if (parsed.scheme not in ("http", "https") or not parsed.hostname
                 or parsed.username is not None or parsed.password is not None
                 or parsed.path or parsed.query or parsed.fragment):
             return None
-        return parsed.scheme, parsed.hostname, parsed.port or (443 if parsed.scheme == "https" else 80)
+
+        port = parsed.port
+        if port is None:
+            port = 443 if parsed.scheme == "https" else 80
+        if port < 1:
+            return None
+
+        if parsed.hostname not in ("localhost", "127.0.0.1"):
+            public_origin = os.environ.get("PUBLIC_ORIGIN", "").strip()
+            if value != public_origin:
+                return None
+
+        return parsed.scheme, parsed.hostname, port
     except ValueError:
         return None
 
@@ -596,11 +608,11 @@ async def local_requests_only(request: Request, call_next):
     hosts = request.headers.getlist("host")
     target = _local_origin(f"{request.url.scheme}://{hosts[0]}") if len(hosts) == 1 else None
     if target is None:
-        return JSONResponse(status_code=400, content={"detail": "仅允许 localhost / 127.0.0.1 Host"})
+        return JSONResponse(status_code=400, content={"detail": "访问地址不在允许列表中"})
     origins = request.headers.getlist("origin")
     if (origins and (len(origins) != 1 or _local_origin(origins[0]) != target)
             or request.headers.get("sec-fetch-site") == "cross-site"):
-        return JSONResponse(status_code=403, content={"detail": "仅允许本地页面同源请求"})
+        return JSONResponse(status_code=403, content={"detail": "仅允许同源请求"})
     try:
         return await call_next(request)
     except Exception:
