@@ -3,128 +3,762 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
-<title>AlphaGenome · 本地研究工作台</title>
+<meta name="color-scheme" content="light">
+<title>AlphaGenome · 基因组预测工作台</title>
 <style>
-:root{--bg:#080e16;--surface:#101923;--raised:#17232f;--border:#293c4d;--text:#e1edf4;--muted:#a0b3c5;--accent:#58e3b1;--cyan:#74cfee;--red:#ff9ca7;--amber:#f7cb82;--mono:Consolas,"Cascadia Code",monospace;--sans:"Segoe UI","Microsoft YaHei",system-ui,sans-serif}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.65 var(--sans)}button,input,select,textarea{font:inherit}button,a,input,select,textarea{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:wait;opacity:.55}a{color:var(--cyan);text-underline-offset:3px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button{color:var(--text);background:var(--raised);border:1px solid var(--border);border-radius:6px;min-height:40px;padding:8px 14px;transition:background .15s,border-color .15s}button:hover:not(:disabled){background:#223747;border-color:#5a849b}.primary{background:var(--accent);color:#061910;border-color:var(--accent);font-weight:700}.primary:hover:not(:disabled){background:#86efc9;border-color:#86efc9}.danger{color:var(--red)}.muted{color:var(--muted)}.mono,code{font-family:var(--mono)}code{font-size:12px;color:var(--cyan);overflow-wrap:anywhere}h1,h2,h3,p{margin-top:0}h1{font-size:18px;line-height:1.3;margin:0;font-weight:650}h2{font-size:25px;line-height:1.35;letter-spacing:-.5px;margin-bottom:8px}h3{font-size:15px;font-weight:650;margin-bottom:14px}small,.hint{font-size:12px;color:var(--muted)}.hint{margin:6px 0 0}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.grow{flex:1;min-width:0}.hidden,[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
-header{display:flex;align-items:center;flex-wrap:wrap;gap:16px;padding:16px 24px;border-bottom:1px solid var(--border);background:#0d1620}.brand{display:flex;gap:12px;align-items:center;min-width:0}.brand svg{width:32px;height:36px;color:var(--accent);flex:none}.brand small{font-family:var(--mono);letter-spacing:1.5px;font-size:10px}.status{font-family:var(--mono);font-size:12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.status span{color:var(--muted)}.status [data-ready="true"]{color:var(--accent)}.status [data-ready="false"]{color:var(--amber)}.shell{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:calc(100dvh - 88px)}aside{padding:26px 12px;border-right:1px solid var(--border);background:#0d151f}.eyebrow{font:11px var(--mono);letter-spacing:1.5px;color:var(--muted);margin:0 12px 12px}.nav{display:grid;gap:5px}.nav button{background:transparent;border-color:transparent;text-align:left;display:flex;align-items:center;gap:12px;min-height:62px;padding:10px 12px;line-height:1.45}.nav button .number{font:12px var(--mono);color:var(--muted)}.nav button span:last-child{min-width:0}.nav button small{display:block;font:10px var(--mono);margin-top:3px;color:var(--muted)}.nav button.active{background:#122d28;border-color:#285d4c;color:var(--accent)}.nav button.active .number{color:var(--accent)}.nav .divider{height:1px;background:var(--border);margin:18px 8px}.aside-note{margin:32px 12px 0;font-size:12px;line-height:1.8;color:var(--muted)}main{min-width:0;padding:32px clamp(16px,3vw,44px) 60px;max-width:1550px;width:100%}.intro{max-width:920px;color:var(--muted);margin-bottom:22px}.card{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:20px;margin-bottom:16px;min-width:0}.step-label{font:11px var(--mono);color:var(--accent);margin-right:10px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}.field{min-width:0}.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}input:not([type=checkbox]),textarea,select{display:block;width:100%;min-height:40px;border:1px solid #4a6175;border-radius:5px;background:#090f18;color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:13px}input::placeholder,textarea::placeholder{color:#90a1b2}textarea{resize:vertical;line-height:1.7}input[readonly]{border-style:dashed;color:var(--accent)}input[type=checkbox]{accent-color:var(--accent);width:17px;height:17px;flex:none}.check{display:flex;align-items:center;gap:9px;font-size:13px;min-height:40px}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{font:12px var(--mono);min-height:38px;padding:7px 11px;border-radius:5px;color:var(--muted)}.chip[aria-pressed=true]{color:var(--accent);border-color:#53b993;background:#102d25}.chip small{display:none}.barline{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap}.barline h3{margin:0}.example{margin-top:14px}.example button{min-height:34px;font-size:12px;color:var(--cyan);background:transparent}.term-tools{display:flex;gap:8px;align-items:end;margin-bottom:10px;flex-wrap:wrap}.term-list{max-height:165px;overflow:auto;border:1px solid var(--border);border-radius:6px;padding:5px;background:#0c131d}.term-option{display:flex;width:100%;align-items:center;gap:12px;border:0;border-radius:3px;background:transparent;text-align:left;min-height:40px;font-size:12px;padding:7px 9px}.term-option code{min-width:118px}.term-option span{overflow-wrap:anywhere}.selected-terms{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.tag{color:var(--cyan);background:#112c3a;border-color:#396578;font-size:12px;min-height:38px}.notice{padding:12px 15px;border:1px solid #355569;background:#10212e;border-radius:6px;color:#b8d8e8;font-size:13px;margin-bottom:16px;overflow-wrap:anywhere}.notice.warn{background:#281f12;border-color:#785d35;color:var(--amber)}.notice.error{background:#2b1820;border-color:#814351;color:#ffb8c1}.notice.success{background:#0e2c24;border-color:#326f57;color:#acf3d4}.notice p:last-child{margin:0}.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.run-card{border-top:1px solid var(--border);padding-top:18px;margin-top:18px}.loading{padding:30px;text-align:center;color:var(--muted)}.spinner{display:inline-block;vertical-align:middle;width:17px;height:17px;margin-right:10px;border:2px solid #34505a;border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.result-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:28px 0 14px}.result-toolbar h3{margin:0;flex:1}.result-summary{font:12px/1.8 var(--mono);color:var(--muted);margin-bottom:15px;overflow-wrap:anywhere}.plot-card{border:1px solid var(--border);border-radius:7px;margin-bottom:14px;background:#0c141e;overflow:hidden}.plot-head{padding:12px 16px;background:#14212c;border-bottom:1px solid var(--border)}.plot-head strong{font:600 12px var(--mono);color:var(--accent)}.plot-head .hint{margin-top:4px}.track-label{padding:9px 16px 0;font:12px var(--mono);overflow-wrap:anywhere;color:var(--muted)}canvas{display:block;width:100%;height:160px}.heatmap{height:310px}.legend{display:flex;flex-wrap:wrap;gap:18px;padding:10px 16px;font-size:12px;color:var(--muted)}.legend i{display:inline-block;width:18px;height:0;border-top:2px solid var(--accent);vertical-align:middle;margin-right:6px}.legend .ref{border-color:#bdd4e4;border-top-style:dashed}.legend .alt{border-color:#fa9d9d}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:5px;max-height:510px}table{border-collapse:collapse;min-width:100%;font:12px/1.6 var(--mono)}th,td{padding:9px 12px;border-bottom:1px solid #243442;text-align:left;white-space:nowrap}th{background:#1a2a38;position:sticky;top:0;z-index:1}th button{background:transparent;border:0;font:inherit;min-height:28px;padding:2px 4px}tr:hover td{background:#14232f}.numeric{font-variant-numeric:tabular-nums}.pagination{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-top:10px}.pagination span{font-size:12px;color:var(--muted)}.pagination button{min-height:36px}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.raw{background:#070c12;border:1px solid var(--border);border-radius:5px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:420px;overflow:auto;font:12px/1.7 var(--mono)}dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:9px 20px;font-size:13px}dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}.logline{display:flex;gap:16px;padding:8px 0;border-bottom:1px solid var(--border);font:12px/1.6 var(--mono);overflow-wrap:anywhere}.logline time{color:var(--muted);flex:none}.logline.error{color:var(--red)}.logline.success{color:var(--accent)}details{margin-top:16px}summary{cursor:pointer;color:var(--muted);font-size:13px;min-height:38px;padding:8px 0}footer{font-size:12px;color:var(--muted);margin-top:30px;display:flex;gap:16px;flex-wrap:wrap}.disclaimer{border-left:2px solid #426779;padding:0 0 0 12px;margin-top:18px;font-size:12px;color:var(--muted)}
-@media(min-width:1350px){.parameter-columns{display:grid;grid-template-columns:minmax(300px,.8fr) minmax(450px,1.2fr);gap:18px;align-items:start}.parameter-columns>.card{height:100%}}
-@media(max-width:1050px){header .grow{display:none}header{gap:12px}.status{margin-left:auto}.shell{grid-template-columns:180px minmax(0,1fr)}.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}main{padding:24px 18px}h1{font-size:16px}}
-@media(max-width:700px){header{padding:14px 16px}.status{order:3;width:100%;margin:0}.header-config{margin-left:auto}.shell{display:block}aside{padding:10px 12px;border-right:0;border-bottom:1px solid var(--border)}aside .eyebrow,.aside-note,.nav .divider,.nav button small,.nav .number{display:none}.nav{display:flex;overflow-x:auto;gap:5px;padding:3px 0 8px}.nav button{flex:none;min-height:44px;font-size:12px;padding:8px 12px}main{padding:22px 14px 40px}.card{padding:16px}.grid,.grid.four,.split{grid-template-columns:1fr}h2{font-size:22px}button,.chip,.tag,input:not([type=checkbox]),select{min-height:44px}.intro{font-size:13px}.term-option{min-height:44px}.term-tools button{flex:none}.pagination{justify-content:flex-start}dl{grid-template-columns:1fr;gap:4px}dd{margin-bottom:9px}.actions .primary{width:100%}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+:root {
+  --page:#f3f5fa; --paper:#fff; --ink:#202c46; --muted:#67758e; --iris:#6154bc; --teal:#137d86;
+  --line:rgba(32,44,70,.12); --soft:rgba(97,84,188,.07); --teal-soft:rgba(19,125,134,.07);
+  --danger:#a1394c; --warning:#855b19;
+  --display:"Bahnschrift","DengXian","Microsoft YaHei UI",sans-serif;
+  --body:"Microsoft YaHei UI","PingFang SC","Segoe UI",sans-serif;
+  --mono:"Cascadia Code","Consolas",monospace;
+}
+* { box-sizing:border-box; }
+body { margin:0; color:var(--ink); background:var(--page); font:14px/1.65 var(--body); }
+button,input,select,textarea { font:inherit; }
+button,a,input,select,textarea,summary { touch-action:manipulation; }
+button { cursor:pointer; border:1px solid var(--line); border-radius:8px; padding:9px 15px; min-height:40px; background:var(--paper); color:var(--ink); transition:background .15s,border-color .15s; }
+button:hover:not(:disabled) { border-color:var(--iris); background:var(--soft); }
+button:disabled { cursor:wait; opacity:.55; }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible { outline:3px solid rgba(97,84,188,.5); outline-offset:3px; }
+a { color:var(--iris); text-underline-offset:3px; }
+h1,h2,h3,p { margin-top:0; }
+h1 { font:600 20px/1.2 var(--display); letter-spacing:-.7px; margin:0; }
+h2 { font:700 29px/1.35 var(--display); letter-spacing:-.7px; margin:0 0 9px; }
+h3 { font-size:15px; margin:0; font-weight:650; }
+p { margin-bottom:12px; }
+small,.hint { font-size:12px; color:var(--muted); }
+.hint { margin:7px 0 0; line-height:1.7; }
+.muted { color:var(--muted); }
+.mono,code { font-family:var(--mono); }
+code { font-size:12px; overflow-wrap:anywhere; }
+.hidden,[hidden] { display:none!important; }
+.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+.skip-link { position:fixed; left:14px; top:-100px; z-index:10; background:var(--paper); padding:10px; }
+.skip-link:focus { top:10px; }
+.primary { background:var(--iris); border-color:var(--iris); color:#fff; font-weight:600; }
+.primary:hover:not(:disabled) { background:var(--ink); border-color:var(--ink); }
+.secondary { color:var(--iris); background:var(--soft); border-color:transparent; }
+.text-button { color:var(--iris); border-color:transparent; background:transparent; padding:5px 8px; min-height:34px; font-size:12px; }
+.danger { color:var(--danger); }
+.icon { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+.row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.grow { flex:1; min-width:0; }
+header { height:78px; padding:0 30px; border-bottom:1px solid var(--line); display:flex; gap:24px; align-items:center; background:var(--paper); }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--ink); }
+.brand-mark { width:37px; height:42px; color:var(--iris); }
+.brand small { display:block; font-size:10px; margin-top:5px; letter-spacing:2px; }
+.header-context { color:var(--muted); font-size:12px; border-left:1px solid var(--line); padding-left:24px; }
+.header-right { margin-left:auto; display:flex; align-items:center; gap:20px; }
+.connection { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); }
+.connection::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--muted); }
+.connection[data-ready="true"]::before { background:var(--teal); box-shadow:0 0 0 4px var(--teal-soft); }
+.header-config { display:flex; gap:8px; align-items:center; font-size:12px; }
+.shell { display:grid; grid-template-columns:206px minmax(0,1fr); min-height:calc(100dvh - 78px); }
+aside { padding:30px 15px 24px; border-right:1px solid var(--line); background:var(--paper); display:flex; flex-direction:column; }
+.nav-group-label { margin:0 14px 12px; font-size:11px; color:var(--muted); letter-spacing:1px; }
+.nav { display:grid; gap:7px; }
+.nav button { display:flex; gap:12px; align-items:center; text-align:left; padding:12px 14px; min-height:46px; border-color:transparent; background:transparent; color:var(--muted); }
+.nav button.active { color:var(--iris); background:var(--soft); font-weight:600; }
+.nav button.active::after { content:""; width:5px; height:5px; border-radius:50%; background:var(--iris); margin-left:auto; }
+.nav-divider { height:1px; background:var(--line); margin:18px 13px; }
+.aside-note { margin:auto 13px 0; padding-top:55px; color:var(--muted); font-size:11px; line-height:1.9; }
+.aside-note strong { font-weight:500; color:var(--ink); display:block; margin-bottom:6px; }
+main { min-width:0; padding:29px clamp(20px,3.3vw,52px) 24px; width:100%; max-width:1530px; }
+.page-heading { display:flex; gap:20px; align-items:center; justify-content:space-between; margin-bottom:22px; }
+.intro { margin:0; color:var(--muted); font-size:13px; max-width:710px; }
+.example-button { color:var(--iris); white-space:nowrap; display:flex; align-items:center; gap:8px; }
+.setup-banner { display:flex; align-items:center; gap:13px; border:1px solid rgba(97,84,188,.2); border-radius:10px; background:var(--soft); padding:13px 17px; margin-bottom:20px; }
+.setup-icon { width:32px; height:32px; color:var(--iris); background:var(--paper); display:grid; place-items:center; border-radius:8px; flex:none; }
+.setup-banner strong { font-size:13px; font-weight:600; }
+.setup-banner p { font-size:12px; color:var(--muted); margin:2px 0 0; }
+.setup-banner button { margin-left:auto; flex:none; font-size:12px; }
+.workbench { display:grid; grid-template-columns:minmax(0,1fr) 328px; gap:18px; align-items:start; }
+.input-column { min-width:0; display:grid; gap:18px; }
+.card { min-width:0; background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:21px; }
+.card-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px; }
+.card-heading h3 { display:flex; align-items:center; gap:9px; }
+.card-heading .icon { color:var(--muted); width:17px; height:17px; }
+.badge { color:var(--muted); font-size:11px; border-radius:5px; padding:3px 7px; background:var(--page); white-space:nowrap; }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:15px; }
+.grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.field { min-width:0; }
+.field label { display:block; font-size:12px; font-weight:500; margin-bottom:7px; }
+.field label small { font-size:11px; font-weight:400; }
+input:not([type="checkbox"]),select,textarea { display:block; width:100%; min-height:42px; padding:9px 11px; border:1px solid rgba(32,44,70,.2); border-radius:7px; background:var(--paper); color:var(--ink); outline-offset:2px; }
+input:not([type="checkbox"]),textarea { font-family:var(--mono); font-size:13px; }
+input::placeholder,textarea::placeholder { font-family:var(--body); color:var(--muted); opacity:.85; font-size:12px; }
+input[readonly] { background:var(--page); border-color:var(--line); color:var(--muted); }
+input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="true"] { border-color:var(--danger); background:rgba(161,57,76,.04); }
+textarea { resize:vertical; line-height:1.8; min-height:135px; }
+input[type="checkbox"] { width:16px; height:16px; accent-color:var(--iris); flex:none; }
+.check { display:flex; align-items:center; gap:8px; min-height:40px; font-size:12px; }
+.coordinates { margin-top:16px; }
+.coordinate-note { margin-top:11px; color:var(--muted); font-size:11px; }
+.locus { margin:18px -21px -21px; padding:13px 21px 12px; border-top:1px solid var(--line); border-radius:0 0 12px 12px; background:var(--soft); }
+.locus-info { display:flex; justify-content:space-between; gap:10px; color:var(--iris); font:11px var(--mono); }
+.locus-info span:last-child { font-family:var(--body); }
+.ruler { height:22px; position:relative; margin:10px 0 6px; background:repeating-linear-gradient(90deg,transparent 0,transparent calc(2.5% - 1px),rgba(97,84,188,.25) calc(2.5% - 1px),rgba(97,84,188,.25) 2.5%) bottom/100% 7px no-repeat; border-bottom:1px solid rgba(97,84,188,.35); }
+.ruler::before { content:""; position:absolute; inset:2px 0 11px; background:rgba(97,84,188,.14); border-left:2px solid var(--iris); border-right:2px solid var(--iris); border-radius:2px; }
+.ruler-marker { position:absolute; left:50%; top:-3px; height:29px; width:2px; background:var(--teal); z-index:1; }
+.ruler-marker::before { content:""; position:absolute; left:-3px; top:0; width:8px; height:8px; background:var(--teal); border-radius:50%; }
+.locus-values { display:flex; justify-content:space-between; gap:8px; color:var(--muted); font:10px var(--mono); }
+.locus-values span { min-width:0; max-width:34%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.output-panel { padding:21px 17px; }
+.output-panel .card-heading { padding:0 4px; margin-bottom:9px; }
+.output-description { padding:0 4px; color:var(--muted); font-size:12px; margin-bottom:15px; }
+.chips { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.chip { min-height:57px; text-align:left; padding:9px 10px; border-color:var(--line); position:relative; }
+.chip strong { display:block; font-size:12px; font-weight:500; }
+.chip small { display:block; font-size:10px; margin-top:3px; }
+.chip[aria-pressed="true"] { color:var(--iris); background:var(--soft); border-color:rgba(97,84,188,.55); box-shadow:inset 3px 0 var(--iris); }
+.chip[aria-pressed="true"] small { color:var(--iris); }
+.output-footnote { border-top:1px solid var(--line); margin:17px 4px 0; padding-top:12px; font-size:11px; color:var(--muted); }
+.term-search { position:relative; }
+.term-search .icon { position:absolute; left:12px; top:12px; width:17px; height:17px; color:var(--muted); }
+.term-search input { padding-left:38px; font-family:var(--body); }
+.term-list { display:flex; flex-wrap:wrap; gap:7px; max-height:166px; overflow:auto; margin-top:12px; padding:2px; }
+.term-option { font-size:12px; padding:7px 11px; min-height:36px; background:var(--page); border-color:transparent; }
+.term-option span + span { color:var(--muted); margin-left:8px; }
+.selected-terms { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; min-height:34px; align-items:center; }
+.selected-label { font-size:11px; color:var(--muted); margin-right:2px; }
+.tag { color:var(--teal); background:var(--teal-soft); border-color:rgba(19,125,134,.18); font-size:12px; padding:5px 10px; min-height:33px; }
+.tag span { margin-left:8px; }
+.terms-footer { margin-top:12px; border-top:1px solid var(--line); padding-top:10px; }
+.terms-footer summary { font-size:11px; }
+.term-tools { display:flex; gap:8px; align-items:end; margin-top:10px; }
+.term-tools button { flex:none; }
+.term-warning { font-size:11px; color:var(--warning); margin:8px 0 0; }
+details > summary { cursor:pointer; color:var(--muted); font-size:12px; min-height:30px; padding:4px 0; }
+.advanced { margin-top:18px; padding:0 20px; background:var(--paper); border:1px solid var(--line); border-radius:10px; }
+.advanced > summary { padding:14px 0; color:var(--ink); }
+.advanced > summary span { color:var(--muted); margin-left:12px; font-size:11px; }
+.advanced[open] { padding-bottom:18px; }
+.advanced .grid { border-top:1px solid var(--line); padding-top:16px; }
+.run-bar { position:sticky; bottom:0; z-index:3; display:flex; justify-content:space-between; align-items:center; gap:20px; padding:16px 0; background:var(--page); border-top:1px solid var(--line); margin-top:16px; }
+.run-summary { font-size:12px; font-weight:500; margin-bottom:3px; }
+.run-status { font-size:11px; color:var(--muted); }
+.run-button { min-width:176px; min-height:45px; display:flex; align-items:center; justify-content:center; gap:11px; flex:none; }
+.run-button .icon { width:15px; height:15px; }
+.notice { background:var(--soft); color:var(--ink); border:1px solid rgba(97,84,188,.2); border-radius:8px; padding:12px 15px; margin-bottom:16px; font-size:13px; overflow-wrap:anywhere; }
+.notice.warn { background:rgba(133,91,25,.06); border-color:rgba(133,91,25,.23); color:var(--warning); }
+.notice.error { background:rgba(161,57,76,.06); border-color:rgba(161,57,76,.25); color:var(--danger); }
+.notice.success { background:var(--teal-soft); border-color:rgba(19,125,134,.25); color:var(--teal); }
+.result-area { border-top:1px solid var(--line); padding-top:22px; scroll-margin-top:20px; }
+.empty-result { display:flex; gap:16px; align-items:center; padding:23px; border:1px dashed rgba(32,44,70,.19); border-radius:10px; }
+.empty-icon { display:grid; place-items:center; width:43px; height:43px; color:var(--muted); background:var(--paper); border:1px solid var(--line); border-radius:10px; flex:none; }
+.empty-result h3 { font-size:13px; font-weight:500; margin-bottom:4px; }
+.empty-result p { margin:0; font-size:12px; color:var(--muted); }
+.result-toolbar { display:flex; gap:10px; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+.result-toolbar button { font-size:12px; }
+.result-summary { color:var(--muted); font-size:12px; overflow-wrap:anywhere; margin-bottom:16px; }
+.result-summary strong { color:var(--ink); font-weight:500; }
+.result-area .card { margin-bottom:14px; }
+.result-area .card h3 { margin-bottom:9px; }
+.result-help { margin-bottom:15px; font-size:11px; color:var(--muted); }
+.plot-card { background:var(--paper); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:14px; }
+.plot-head { padding:12px 17px; border-bottom:1px solid var(--line); background:var(--soft); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.plot-head strong { color:var(--iris); font-size:13px; font-weight:600; }
+.plot-head small { font-family:var(--mono); font-size:10px; }
+.plot-card > .notice { margin:13px; }
+.track-label { margin:10px 17px 3px; color:var(--muted); font-size:11px; overflow-wrap:anywhere; }
+.plot-body { padding:15px; }
+canvas { display:block; width:100%; height:166px; }
+.heatmap { height:310px; }
+.split { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.legend { display:flex; gap:18px; flex-wrap:wrap; padding:10px 17px; color:var(--muted); font-size:11px; }
+.legend i { display:inline-block; width:16px; border-top:2px solid var(--teal); margin-right:6px; vertical-align:middle; }
+.legend .ref { border-color:var(--muted); border-top-style:dashed; }
+.legend .alt { border-color:var(--iris); }
+.barline { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+.barline button { font-size:12px; }
+.table-wrap { overflow:auto; max-height:510px; border:1px solid var(--line); border-radius:7px; }
+table { border-collapse:collapse; min-width:100%; font-size:12px; }
+th,td { padding:9px 12px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+th { background:var(--page); position:sticky; top:0; z-index:1; font-weight:500; }
+th button { font:inherit; background:transparent; border:0; padding:3px 0; min-height:28px; }
+tr:hover td { background:var(--soft); }
+.numeric { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.pagination { display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-wrap:wrap; margin-top:12px; font-size:11px; color:var(--muted); }
+.pagination button { min-height:34px; padding:5px 10px; font-size:11px; }
+.raw { background:var(--page); border:1px solid var(--line); border-radius:7px; padding:15px; white-space:pre-wrap; overflow-wrap:anywhere; max-height:420px; overflow:auto; font:12px/1.8 var(--mono); }
+.loading { padding:35px 20px; text-align:center; color:var(--muted); font-size:13px; }
+.loading p { margin:8px 0 0; font-size:11px; }
+.spinner { display:inline-block; width:15px; height:15px; border:2px solid rgba(97,84,188,.2); border-top-color:var(--iris); border-radius:50%; vertical-align:middle; margin-right:8px; animation:spin .9s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.settings-layout { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:18px; align-items:start; }
+.settings-layout .card { margin-bottom:18px; }
+.settings-layout h3 { margin-bottom:17px; }
+.settings-layout .check { align-items:flex-start; margin-top:13px; }
+.settings-layout .check input { margin-top:4px; }
+.actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:18px; }
+.key-input { flex-wrap:nowrap; }
+.key-input button { flex:none; font-size:12px; }
+dl { display:grid; grid-template-columns:max-content minmax(0,1fr); gap:12px 18px; font-size:12px; margin:0; }
+dt { color:var(--muted); }
+dd { margin:0; overflow-wrap:anywhere; }
+.installation { margin-top:8px; }
+.installation ol { margin:12px 0; padding-left:20px; color:var(--muted); font-size:12px; }
+.installation li { margin-bottom:13px; padding-left:4px; }
+.installation .raw { margin-top:7px; }
+.metadata-controls { margin-bottom:18px; }
+.metadata-controls .field { max-width:360px; }
+.metadata-controls .row { align-items:end; }
+#metadata-result > .card { margin-bottom:18px; }
+.logline { display:grid; grid-template-columns:75px 1fr auto; gap:18px; align-items:center; padding:12px 0; border-bottom:1px solid var(--line); font-size:12px; }
+.logline time,.logline small { color:var(--muted); font-size:11px; }
+.logline.error .log-status { color:var(--danger); }
+.logline.success .log-status { color:var(--teal); }
+.log-path { font:10px var(--mono); color:var(--muted); }
+footer { display:flex; gap:16px; flex-wrap:wrap; margin-top:24px; padding-top:16px; border-top:1px solid var(--line); font-size:11px; color:var(--muted); }
+footer a { color:var(--muted); }
+footer span { margin-right:auto; }
+@media(min-width:1500px) { .workbench { grid-template-columns:minmax(0,1fr) 375px; } .chip { min-height:61px; } }
+@media(max-width:1180px) { .shell { grid-template-columns:176px minmax(0,1fr); } aside { padding-left:9px; padding-right:9px; } main { padding:25px 22px; } .workbench { grid-template-columns:minmax(0,1fr) 285px; gap:14px; } .card { padding:18px; } .locus { margin:16px -18px -18px; padding:12px 18px; } .grid.three { grid-template-columns:repeat(2,minmax(0,1fr)); } .grid.three > :first-child { grid-column:1/-1; } .header-context { display:none; } }
+@media(max-width:960px) { .shell { grid-template-columns:160px minmax(0,1fr); } .workbench { grid-template-columns:1fr; } .output-panel .chips { grid-template-columns:repeat(3,minmax(0,1fr)); } .settings-layout { grid-template-columns:1fr; } .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); } .grid.three > :first-child { grid-column:auto; } .page-heading { align-items:flex-start; } }
+@media(max-width:700px) {
+  header { height:auto; min-height:76px; padding:14px 17px; gap:12px; flex-wrap:wrap; }
+  h1 { font-size:18px; } .brand small { font-size:9px; letter-spacing:1px; } .brand-mark { width:29px; height:35px; }
+  .header-right { gap:10px; } .header-config { padding:8px 10px; min-height:40px; } .header-config .icon { display:none; }
+  .connection { display:none; } .shell { display:block; } aside { padding:8px 12px; border-right:0; border-bottom:1px solid var(--line); }
+  .nav-group-label,.nav-divider,.aside-note { display:none; } .nav { display:flex; overflow-x:auto; gap:4px; padding:3px 0; }
+  .nav button { flex:none; padding:9px 12px; min-height:42px; font-size:12px; gap:7px; } .nav .icon { width:15px; height:15px; } .nav button.active::after { display:none; }
+  main { padding:23px 15px; } h2 { font-size:25px; } .intro { font-size:12px; } .page-heading { gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  .example-button { padding:7px 11px; font-size:12px; min-height:36px; } .setup-banner { flex-wrap:wrap; padding:12px; gap:10px; } .setup-banner .grow { min-width:180px; } .setup-banner button { margin-left:42px; }
+  .grid.three { grid-template-columns:repeat(2,minmax(0,1fr)); } .grid.three > :first-child { grid-column:1/-1; }
+  .output-panel .chips { grid-template-columns:repeat(2,minmax(0,1fr)); } .card { padding:17px; border-radius:10px; }
+  .locus { margin:16px -17px -17px; padding:12px 17px; } .card-heading { margin-bottom:15px; }
+  input:not([type="checkbox"]),select,.term-option,.tag { min-height:44px; } .tag { padding:6px 10px; }
+  .term-tools { flex-wrap:wrap; } .term-tools .field { flex-basis:100%; } .term-tools button { width:100%; }
+  .run-bar { flex-wrap:wrap; gap:12px; } .run-button { width:100%; min-height:48px; } .run-summary { font-size:12px; }
+  .advanced > summary span { display:block; margin:4px 0 0 15px; } .advanced .grid,.split { grid-template-columns:1fr; }
+  .empty-result { padding:18px 14px; } .pagination { justify-content:flex-start; } .logline { gap:10px; grid-template-columns:65px 1fr; } .logline > small { grid-column:2; }
+  footer { gap:12px; } footer span { width:100%; } .settings-layout .actions button { flex:1; }
+}
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">跳转到操作区</a>
+<svg class="sr-only" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+ <symbol id="i-interval" viewBox="0 0 24 24"><path d="M3 7v10m18-10v10M3 12h18M8 9v6m8-6v6"/></symbol>
+ <symbol id="i-variant" viewBox="0 0 24 24"><path d="M4 5h5l6 14h5M4 19h5l6-14h5M4 12h3m10 0h3"/></symbol>
+ <symbol id="i-score" viewBox="0 0 24 24"><path d="M4 19h16M7 15v-4m5 4V5m5 10V8"/></symbol>
+ <symbol id="i-sequence" viewBox="0 0 24 24"><path d="M8 5 3 12l5 7m8-14 5 7-5 7m-3-15-2 16"/></symbol>
+ <symbol id="i-catalog" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+ <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="9" r="4"/><path d="m11 12 8 8m-4-4 3-3m-1 5 3-3"/></symbol>
+ <symbol id="i-log" viewBox="0 0 24 24"><path d="M8 4h11v16H5V7m3 2h7m-7 4h7m-7 4h4"/><path d="M5 3v5"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+ <symbol id="i-example" viewBox="0 0 24 24"><path d="M9 3h6m-5 0v6l-6 9a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-6-9V3M7 15h10"/></symbol>
+</svg>
 <header>
- <div class="brand"><svg aria-hidden="true" viewBox="0 0 32 40" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 2c0 9 18 9 18 18S7 29 7 38M25 2c0 9-18 9-18 18s18 9 18 18"/><path d="M10 8h12M8 16h16M8 24h16M10 32h12" stroke="#74cfee"/></svg><div><h1>AlphaGenome</h1><small>LOCAL RESEARCH CONSOLE</small></div></div>
- <div class="grow"></div><div class="status" role="status" aria-live="polite"><span id="service-status">正在连接本地服务</span><span id="key-status">Key 未配置</span></div><button class="header-config" data-goto="settings">配置 API Key</button>
+ <a class="brand" href="#interval" aria-label="AlphaGenome 区间预测首页"><svg class="brand-mark" aria-hidden="true" viewBox="0 0 36 44" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3c0 10 18 10 18 19S9 31 9 41M27 3c0 10-18 10-18 19s18 9 18 19"/><path d="M12 10h12M10 18h16M10 26h16M12 34h12" stroke="var(--teal)" stroke-width="1.7"/></svg><div><h1>AlphaGenome</h1><small>基因组预测工作台</small></div></a>
+ <span class="header-context">从一段序列，理解基因调控</span>
+ <div class="header-right"><span class="connection" id="service-status" role="status" aria-live="polite">正在连接本机</span><button class="header-config" data-goto="settings"><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg><span id="key-status">配置密钥</span></button></div>
 </header>
 <div class="shell">
-<aside><p class="eyebrow">WORKSPACE / 功能</p><nav class="nav" aria-label="工作台导航">
-<button data-goto="interval" class="active" aria-current="page"><span class="number">01</span><span>区间预测<small>predict_interval</small></span></button>
-<button data-goto="variant"><span class="number">02</span><span>REF / ALT 对比<small>predict_variant</small></span></button>
-<button data-goto="score"><span class="number">03</span><span>变异效应打分<small>score_variant</small></span></button>
-<button data-goto="sequence"><span class="number">04</span><span>DNA 序列预测<small>predict_sequence</small></span></button>
-<button data-goto="metadata"><span class="number">05</span><span>组织与模型元数据<small>output_metadata</small></span></button>
-<div class="divider"></div><button data-goto="settings"><span class="number">06</span><span>连接设置<small>API KEY</small></span></button><button data-goto="log"><span class="number">07</span><span>调用记录<small>SESSION LOG</small></span></button></nav>
-<p class="aside-note">Python SDK → Google API<br>前端只与本机服务通信。<br>不上传 Key 至其他服务。<br><br>非 Google 官方产品。<br>仅供研究，不用于临床决策。</p></aside>
-<main id="main">
-<div id="global-status" class="notice hidden" role="status" aria-live="polite"></div>
-<section id="workspace">
- <p class="eyebrow" style="margin-left:0">PREDICTION WORKSPACE</p><h2 id="mode-title">参考基因组区间预测</h2><p id="mode-description" class="intro">选定一个基因组区间，探索不同组织中的 RNA 表达、染色质开放性与其他分子信号。</p>
- <div id="workspace-alert" class="notice hidden" role="alert" tabindex="-1"></div>
- <form id="prediction-form">
- <div class="card"><h3><span class="step-label">01</span>输入与参考坐标</h3>
-  <div class="grid" style="margin-bottom:16px"><div class="field"><label for="organism">物种 / 参考基因组</label><select id="organism"><option value="HOMO_SAPIENS">人类 · hg38 / GRCh38</option><option value="MUS_MUSCULUS">小鼠 · mm10 / GRCm38</option></select></div><div class="field" id="width-field"><label for="interval-width">模型输入长度</label><select id="interval-width"></select><p class="hint">以 SDK 返回的精确 bp 数为准，标签为近似名称。</p></div></div>
-  <div id="coordinate-fields" class="grid four"><div class="field"><label for="chromosome">染色体</label><input id="chromosome" value="chr22" list="chromosomes" autocomplete="off" required><datalist id="chromosomes"></datalist></div>
-   <div class="field interval-only"><label for="interval-start">start · 0-based（包含）</label><input id="interval-start" type="number" value="35677410" min="0" required></div><div class="field interval-only"><label for="interval-end">end · 0-based（不包含）</label><input id="interval-end" type="number" value="36725986" min="1" required></div><div class="field interval-only"><label for="computed-width">区间宽度</label><input id="computed-width" readonly aria-describedby="width-hint"><p class="hint" id="width-hint"></p></div>
-   <div class="field variant-only" hidden><label for="position">position · 1-based</label><input id="position" type="number" min="1" value="36201698" required></div><div class="field variant-only" hidden><label for="reference-bases">REF · 参考碱基</label><input id="reference-bases" value="A" pattern="[ACGTNacgtn]+" required spellcheck="false"></div><div class="field variant-only" hidden><label for="alternate-bases">ALT · 替代碱基</label><input id="alternate-bases" value="C" pattern="[ACGTNacgtn]+" required spellcheck="false"></div>
+<aside>
+ <p class="nav-group-label">预测与分析</p>
+ <nav class="nav" aria-label="工作台导航">
+  <button data-goto="interval" class="active" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-interval"/></svg>区间预测</button>
+  <button data-goto="variant"><svg class="icon" aria-hidden="true"><use href="#i-variant"/></svg>变异对比</button>
+  <button data-goto="score"><svg class="icon" aria-hidden="true"><use href="#i-score"/></svg>变异打分</button>
+  <button data-goto="sequence"><svg class="icon" aria-hidden="true"><use href="#i-sequence"/></svg>序列预测</button>
+  <div class="nav-divider"></div>
+  <button data-goto="metadata"><svg class="icon" aria-hidden="true"><use href="#i-catalog"/></svg>组织目录</button>
+  <button data-goto="settings"><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg>连接设置</button>
+  <button data-goto="log"><svg class="icon" aria-hidden="true"><use href="#i-log"/></svg>调用记录</button>
+ </nav>
+ <div class="aside-note"><strong>本机操作 · 官方模型</strong>预测数据发送至 Google。<br>密钥不在浏览器持久保存。<br><br>非 Google 官方产品<br>仅供科研，不用于临床决策</div>
+</aside>
+<main id="main" tabindex="-1">
+ <div id="global-status" class="notice hidden" role="status" aria-live="polite"></div>
+ <section id="workspace" aria-labelledby="mode-title">
+  <div class="page-heading"><div><h2 id="mode-title">区间预测</h2><p id="mode-description" class="intro">选择一段基因组，查看指定组织中的表达、染色质与剪接信号。</p></div><button type="button" id="example-button" class="example-button"><svg class="icon" aria-hidden="true"><use href="#i-example"/></svg>填入官方示例</button></div>
+  <div class="setup-banner" id="setup-banner"><div class="setup-icon"><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg></div><div class="grow"><strong id="setup-title">先连接你的 AlphaGenome 账户</strong><p id="setup-description">配置一次密钥，即可使用下面的预测功能。也可以先填写参数。</p></div><button type="button" id="setup-action" class="secondary">配置密钥</button></div>
+  <div id="workspace-alert" class="notice hidden" role="alert" tabindex="-1"></div>
+  <form id="prediction-form" novalidate>
+   <div class="workbench">
+    <div class="input-column">
+     <section class="card" aria-labelledby="input-heading">
+      <div class="card-heading"><h3 id="input-heading"><svg class="icon" aria-hidden="true"><use href="#i-interval"/></svg>预测范围</h3><span class="badge" id="input-badge">参考基因组</span></div>
+      <div class="grid"><div class="field"><label for="organism">物种与参考基因组</label><select id="organism"><option value="HOMO_SAPIENS">人类 · hg38</option><option value="MUS_MUSCULUS">小鼠 · mm10</option></select></div><div class="field"><label for="interval-width" id="width-label">预测长度</label><select id="interval-width" aria-describedby="coordinate-note"></select></div></div>
+      <div id="coordinate-fields" class="grid three coordinates">
+       <div class="field"><label for="chromosome">染色体</label><input id="chromosome" value="chr22" list="chromosomes" autocomplete="off" required spellcheck="false"><datalist id="chromosomes"></datalist></div>
+       <div class="field interval-only"><label for="interval-start">起点 <small>包含此位置</small></label><input id="interval-start" type="number" value="35677410" min="0" step="1" required></div>
+       <div class="field interval-only"><label for="interval-end">终点 <small>自动计算，不包含</small></label><input id="interval-end" type="number" value="36725986" readonly></div>
+       <div class="field variant-only" hidden><label for="position">变异位置 <small>从 1 开始计数</small></label><input id="position" type="number" min="1" step="1" value="36201698" required></div>
+       <div class="field variant-only" hidden><label for="reference-bases">参考碱基 <small>REF</small></label><input id="reference-bases" value="A" required spellcheck="false"></div>
+       <div class="field variant-only" hidden><label for="alternate-bases">替代碱基 <small>ALT</small></label><input id="alternate-bases" value="C" required spellcheck="false"></div>
+      </div>
+      <div id="sequence-fields" class="coordinates" hidden><div class="field"><label for="sequence">DNA 序列 <small>仅 A、C、G、T、N</small></label><textarea id="sequence" rows="5" spellcheck="false" placeholder="在这里粘贴序列，空格和换行会自动去除。请勿包含 FASTA 标题。" aria-describedby="sequence-hint"></textarea></div><label class="check"><input type="checkbox" id="pad-sequence">允许用 N 在两侧居中填充至所选长度</label><p class="hint" id="sequence-hint"></p><p class="hint">默认不填充、不截断。N 填充会改变序列上下文，可能影响预测。</p></div>
+      <p class="coordinate-note" id="coordinate-note">坐标从 0 开始计数，终点按预测长度自动计算。</p>
+      <div class="locus" id="locus" aria-label="当前输入范围示意，不是预测结果"><div class="locus-info"><span id="locus-title">chr22</span><span id="locus-size">1,048,576 碱基</span></div><div class="ruler" aria-hidden="true"><span class="ruler-marker" id="ruler-marker" hidden></span></div><div class="locus-values"><span id="locus-start">35,677,410</span><span id="locus-middle">输入范围</span><span id="locus-end">36,725,986</span></div></div>
+     </section>
+     <section class="card" id="ontology-card" aria-labelledby="ontology-heading">
+      <div class="card-heading"><h3 id="ontology-heading"><svg class="icon" aria-hidden="true"><use href="#i-catalog"/></svg>组织与细胞</h3><button type="button" id="load-terms" class="text-button">加载可用组织</button></div>
+      <div class="term-search"><label for="term-search" class="sr-only">搜索组织名称或编号</label><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="term-search" type="search" placeholder="搜索组织名称或编号，如「肺」" autocomplete="off"></div>
+      <div id="term-list" class="term-list" aria-label="可选组织"></div><div class="selected-terms" id="selected-terms" aria-live="polite"></div><p class="hint" id="term-source"></p><p class="term-warning" id="term-warning" hidden></p>
+      <details class="terms-footer"><summary>按组织编号添加 / 选择说明</summary><div class="term-tools"><div class="field grow"><label for="custom-term">本体编号 <small>CURIE</small></label><input id="custom-term" placeholder="例如 UBERON:0001157" spellcheck="false"></div><button type="button" id="add-term">添加组织</button></div><p class="hint">最多选择 8 个组织；仅单独预测「剪接位点」时可以不选组织。预设不代表当前物种和预测类型一定支持。</p></details>
+     </section>
+     <div class="notice" id="score-explanation" hidden>变异打分直接使用官方推荐打分器，不按组织筛选。不同打分器的分数含义不同，不能直接当作致病概率。</div>
+    </div>
+    <section class="card output-panel" aria-labelledby="output-heading"><div class="card-heading"><h3 id="output-heading">想观察什么？</h3><span class="badge" id="output-count">已选 1 / 3</span></div><p class="output-description" id="output-description">选择预测信号，单次最多 3 项。</p><div id="output-chips" class="chips" role="group" aria-label="预测信号"></div><p class="output-footnote" id="output-hint">不确定怎么选？先试「RNA 表达」。将指针放在选项上可查看官方名称。</p></section>
+   </div>
+   <details class="advanced" id="advanced-options"><summary>预览设置<span>默认即可使用，不改变模型预测本身</span></summary><div class="grid"><div class="field prediction-only"><label for="max-points">每条轨道的点数上限</label><select id="max-points"><option value="500">500 点 · 轻量预览</option><option value="1500" selected>1,500 点 · 推荐</option><option value="4000">4,000 点 · 更细致</option></select></div><div class="field prediction-only"><label for="aggregation">合并相邻点的方式</label><select id="aggregation"><option value="mean">均值 · 查看整体趋势</option><option value="max">最大值 · 保留局部峰值</option><option value="sum">求和 · 查看累计信号</option></select></div><div class="field score-only" hidden><label for="max-rows">评分返回行数上限</label><select id="max-rows"><option value="500">500 行 · 推荐</option><option value="2000">2,000 行</option><option value="10000">10,000 行</option></select></div></div><p class="hint">普通轨道最多展示前 12 条，接触矩阵仅展示第一条；导出也仅包含本次返回的预览数据。</p></details>
+   <div class="run-bar"><div><div class="run-summary" id="run-summary">人类 · RNA 表达 · 横结肠</div><div class="run-status" id="run-status" role="status" aria-live="polite">配置密钥后即可运行</div></div><button class="primary run-button" id="run-button" type="submit"><span id="run-label">开始预测</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
+  </form>
+  <div id="result" class="result-area" aria-live="polite" aria-label="预测结果"></div>
+ </section>
+ <section id="metadata-view" hidden aria-labelledby="metadata-title"><div class="page-heading"><div><h2 id="metadata-title">组织目录</h2><p class="intro">查询当前物种实际支持的组织、细胞类型和预测信号。</p></div></div><div class="card metadata-controls"><div class="row"><div class="field grow"><label for="metadata-organism">查询物种</label><select id="metadata-organism"><option value="HOMO_SAPIENS">人类 · hg38</option><option value="MUS_MUSCULUS">小鼠 · mm10</option></select></div><button id="metadata-run" class="primary">加载组织目录</button></div><p class="hint">需要有效密钥；只查询模型信息，不运行预测。组织的官方名称保留原文。</p></div><div id="metadata-result"><div class="empty-result"><div class="empty-icon"><svg class="icon" aria-hidden="true"><use href="#i-catalog"/></svg></div><div><h3>先选择物种，再加载目录</h3><p>人类与小鼠的目录分别保存，不会混用。</p></div></div></div></section>
+ <section id="settings-view" hidden aria-labelledby="settings-title"><div class="page-heading"><div><h2 id="settings-title">连接设置</h2><p class="intro">使用你自己的 AlphaGenome 密钥，连接官方模型。</p></div><button class="example-button" id="back-to-workspace">返回预测</button></div><div id="settings-alert" class="notice hidden" role="alert" tabindex="-1"></div>
+  <div class="settings-layout"><div><form id="key-form" class="card"><h3>配置访问密钥</h3><div class="field"><label for="api-key">访问密钥 <small>API Key</small></label><div class="row key-input"><input type="password" id="api-key" class="grow" autocomplete="off" spellcheck="false" placeholder="粘贴你的 AlphaGenome 密钥" required maxlength="1024"><button type="button" id="show-key" aria-controls="api-key" aria-pressed="false">显示</button></div></div><p class="hint">还没有密钥？<a href="https://alphagenome.google/api" target="_blank" rel="noopener noreferrer">前往官方页面申请</a></p><label class="check"><input type="checkbox" id="persist-key"><span>在这台电脑上记住密钥<br><small>将明文写入本地 .apikey 文件，不加密，仅限可信电脑。</small></span></label><p class="hint">不勾选则仅保存在服务内存中，重启后需重新配置；保存时会删除旧的密钥文件。</p><div class="actions"><button class="primary" id="save-key" type="submit">保存并验证</button><button class="danger" id="clear-key" type="button">清除密钥</button></div><p class="hint">验证会查询真实模型元数据，不会自动发起预测。</p></form><div class="notice warn">仅在可信本机环境使用。不要将此服务暴露到公网或不可信局域网；密钥仅用于后端连接 Google 官方服务。</div></div>
+   <div><div class="card"><div class="card-heading"><h3 style="margin:0">连接状态</h3><button id="refresh-status" class="text-button">重新检查</button></div><dl id="service-details"><dt>本机服务</dt><dd>正在检查…</dd></dl></div><div class="card"><details class="installation" id="installation"><summary>首次安装与启动说明</summary><ol><li>在项目目录中打开终端，安装依赖。<pre class="raw">python -m pip install -r requirements.txt</pre></li><li>启动本机服务，保持终端打开。<pre class="raw">python server.py</pre></li><li>在浏览器打开 <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>，填入密钥后点击「保存并验证」。</li></ol><p class="hint">Windows 也可双击 start.cmd 启动。</p></details><details><summary>使用环境变量配置密钥</summary><p class="hint">可在启动前设置 <code>ALPHA_GENOME_API_KEY</code>。页面清除只影响当前进程与本地密钥文件，不会修改系统环境变量；重启后可能再次加载。</p></details></div></div>
   </div>
-  <div id="sequence-fields" hidden><div class="field"><label for="sequence">DNA 序列 · 仅 A / C / G / T / N（自动去除空白）</label><textarea id="sequence" rows="5" spellcheck="false" placeholder="粘贴 DNA 序列，不包含 FASTA 标题">GATTACA</textarea></div><label class="check"><input type="checkbox" id="pad-sequence">明确允许用 N 居中填充到指定模型长度</label><p class="hint" id="sequence-hint"></p><p class="hint">N 填充会改变上下文，可能影响预测；默认不填充。FASTA 文件请仅粘贴序列部分。</p></div>
-  <div class="row example" id="example-row"><button type="button" id="example-button">载入官方 chr22 A&gt;C 示例</button><span class="hint">人类 hg38 · 横结肠 RNA-seq</span></div>
-  <p class="hint variant-only" hidden>支持 SNV 与使用实际碱基表示的插入/缺失。模型不替你验证 REF 是否匹配参考基因组。</p>
- </div>
- <div class="parameter-columns">
- <div class="card"><div class="barline"><h3><span class="step-label">02</span><span id="output-heading">输出模态</span></h3><small id="output-limit">最多选 3 项</small></div><div id="output-chips" class="chips" role="group" aria-label="输出模态"></div><p class="hint" id="output-hint">选择关注的模态与少量组织，避免大规模轨道返回。</p></div>
- <div class="card" id="ontology-card"><div class="barline"><h3><span class="step-label">03</span>组织 / 细胞类型</h3><button type="button" id="load-terms">获取可用组织</button></div>
-  <div class="field"><label for="term-search">搜索名称或本体编号</label><input id="term-search" type="search" placeholder="例如 lung 或 UBERON:0002048" autocomplete="off"></div>
-  <p class="hint" id="term-source" style="margin-bottom:10px"></p><div class="term-list" id="term-list"></div><div class="selected-terms" id="selected-terms" aria-live="polite"></div>
-  <div class="term-tools"><div class="field grow"><label for="custom-term">手动输入 CURIE（最多 8 个组织）</label><input id="custom-term" placeholder="UBERON:0001157" spellcheck="false"></div><button type="button" id="add-term">添加</button></div><p class="hint">仅 SPLICE_SITES 单独预测时可不选组织。预设来自官方示例，不代表所选物种/模态一定提供该组织。</p>
- </div></div>
- <div class="card"><div class="grid"><div class="field prediction-only"><label for="max-points">每条轨道的预览点数上限</label><select id="max-points"><option value="500">500 点</option><option value="1500" selected>1,500 点</option><option value="4000">4,000 点</option></select></div><div class="field prediction-only"><label for="aggregation">预览聚合方式</label><select id="aggregation"><option value="mean">mean · 每组真实元素均值</option><option value="max">max · 保留每组峰值</option><option value="sum">sum · 每组求和</option></select></div><div class="field score-only" hidden><label for="max-rows">打分返回行数上限</label><select id="max-rows"><option value="500">500 行</option><option value="2000">2,000 行</option><option value="10000">10,000 行</option></select></div></div>
-  <div class="run-card"><div class="actions"><button class="primary" id="run-button" type="submit">运行区间预测</button><span class="muted" id="run-status" role="status" aria-live="polite">等待配置 API Key</span></div><p class="hint">点击运行会通过本地后端向 Google AlphaGenome 发送所填区间、变异或序列；不在页面保存调用历史数据。运行可能需要数分钟，请勿重复提交。</p></div>
- </div></form>
- <div id="result" aria-live="polite"><div class="card"><h3>结果预览</h3><p class="muted" style="margin:0">运行后在这里显示真实 API 结果。当前没有预测数据。</p></div></div>
-</section>
-<section id="metadata-view" hidden><p class="eyebrow" style="margin-left:0">MODEL CATALOG</p><h2>组织与模型元数据</h2><p class="intro">从 <code>output_metadata</code> 获取实际支持的组织与轨道。元数据按物种隔离，不混用人类和小鼠目录。</p><div class="card"><div class="row"><div class="field grow"><label for="metadata-organism">目录物种</label><select id="metadata-organism"><option value="HOMO_SAPIENS">人类 · hg38</option><option value="MUS_MUSCULUS">小鼠 · mm10</option></select></div><button id="metadata-run" class="primary">拉取元数据</button></div></div><div id="metadata-result"></div></section>
-<section id="settings-view" hidden><p class="eyebrow" style="margin-left:0">CONNECTION SETTINGS</p><h2>配置 API Key</h2><p class="intro">从 <a href="https://alphagenome.google/api" target="_blank" rel="noopener noreferrer">AlphaGenome 官方入口</a>申请 Key，在本页面配置即可使用。无需把 Key 发到聊天中。</p>
-<div id="settings-alert" class="notice hidden" role="alert" tabindex="-1"></div><form id="key-form" class="card"><h3>本机 API 连接</h3><div class="field"><label for="api-key">AlphaGenome API Key</label><div class="row"><input type="password" id="api-key" class="grow" autocomplete="off" spellcheck="false" placeholder="粘贴你的 API Key" required maxlength="1024"><button type="button" id="show-key" aria-controls="api-key" aria-pressed="false">显示</button></div></div><label class="check"><input type="checkbox" id="persist-key">在本机 .apikey 文件中明文保存（不加密，仅限可信电脑）</label><p class="hint">默认只存服务进程内存，重启后需重新配置。取消持久化并保存会移除旧的本地 Key 文件。</p><div class="actions" style="margin-top:18px"><button class="primary" id="save-key" type="submit">保存并验证</button><button class="danger" id="clear-key" type="button">清除 Key</button><button id="refresh-status" type="button">刷新状态</button></div><p class="hint">验证使用真实的元数据调用；不会自动发起预测。连接失败时请检查 Key 权限、网络与配额。</p></form>
-<div class="card"><h3>服务状态</h3><dl id="service-details"></dl></div><div class="notice warn">本工作台仅用于可信本机环境。不要把服务暴露到公网或不可信局域网；浏览器不持久保存 Key，后端只向 Google 官方 gRPC 服务发送 Key。</div><details><summary>通过环境变量配置 / 启动说明</summary><p class="muted">也可在启动前设置 <code>ALPHA_GENOME_API_KEY</code>。此配置在服务每次启动时加载；页面清除仅影响本次进程与 .apikey 文件，无法移除你系统里的环境变量。</p><pre class="raw">python -m pip install -r requirements.txt
-python server.py --port 8000
-# 浏览器打开 http://127.0.0.1:8000</pre></details></section>
-<section id="log-view" hidden><h2>本次会话调用记录</h2><p class="intro">仅记录接口名称、状态码和耗时；不记录 Key、序列、变异参数或响应数据。刷新页面后清空。</p><div class="card"><div class="barline"><h3>请求记录</h3><button id="clear-log">清空记录</button></div><div id="logs"><span class="muted">暂无调用记录</span></div></div></section>
-<p class="disclaimer">AlphaGenome 输出是模型预测，不是诊断或致病性判定。图表为降采样预览，细小变化可能被聚合；结果解释请参考官方模态与打分器说明。</p>
-<footer><a href="https://www.alphagenomedocs.com/index.html" target="_blank" rel="noopener noreferrer">官方文档</a><a href="https://www.alphagenomedocs.com/variant_scoring.html" target="_blank" rel="noopener noreferrer">打分含义</a><a href="https://alphagenome.google/terms" target="_blank" rel="noopener noreferrer">服务条款</a><span>本地桥接 · alphagenome Python SDK</span></footer>
-</main></div>
+ </section>
+ <section id="log-view" hidden aria-labelledby="log-title"><div class="page-heading"><div><h2 id="log-title">调用记录</h2><p class="intro">只记录本次会话的操作、状态和耗时，刷新后清空。不记录密钥、输入参数或结果。</p></div><button id="clear-log">清空记录</button></div><div class="card" id="logs"><p class="muted">暂无调用记录</p></div></section>
+ <footer><span>模型结果仅供研究，不能替代实验验证或临床判断。</span><a href="https://www.alphagenomedocs.com/index.html" target="_blank" rel="noopener noreferrer">使用文档</a><a href="https://www.alphagenomedocs.com/variant_scoring.html" target="_blank" rel="noopener noreferrer">评分说明</a><a href="https://alphagenome.google/terms" target="_blank" rel="noopener noreferrer">服务条款</a></footer>
+</main>
+</div>
 <script>
 'use strict';
-const $=id=>document.getElementById(id);
-const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const number=n=>Number(n).toLocaleString('en-US');
-const finite=v=>typeof v==='number'&&Number.isFinite(v);
-const fmt=v=>v==null?'—':finite(v)?(Math.abs(v)<0.0001&&v!==0?v.toExponential(5):Number(v.toPrecision(7)).toString()):String(v);
-const MODES={interval:['参考基因组区间预测','选定一个基因组区间，探索不同组织中的 RNA 表达、染色质开放性与其他分子信号。','运行区间预测','/api/predict/interval'],variant:['变异 REF / ALT 对比','比较参考与替代等位的预测信号。区间使用 0-based 坐标，变异位置使用 1-based 坐标。','运行变异预测','/api/predict/variant'],score:['变异效应打分','使用 SDK 推荐打分器计算变异效应。不同打分器的定义和量纲不同，不应把分数直接当作致病性概率。','运行变异打分','/api/score/variant'],sequence:['自定义 DNA 序列预测','直接输入 DNA 序列。保留受支持的原始长度；只有明确勾选时才用 N 填充，填充后的坐标相对于模型输入。','运行序列预测','/api/predict/sequence']};
-const PRESETS=[{curie:'UBERON:0001157',label:'横结肠 · colon transverse'},{curie:'UBERON:0002048',label:'肺 · lung'},{curie:'UBERON:0000955',label:'脑 · brain'},{curie:'UBERON:0001114',label:'肝右叶 · right liver lobe'},{curie:'CL:0000084',label:'T cell · T 细胞'}];
-const FALLBACK_OUTPUTS=['RNA_SEQ','CAGE','PROCAP','DNASE','ATAC','CHIP_HISTONE','CHIP_TF','SPLICE_SITES','SPLICE_SITE_USAGE','SPLICE_JUNCTIONS','CONTACT_MAPS'];
-const APP={mode:'interval',health:null,meta:{},terms:['UBERON:0001157'],outputs:['RNA_SEQ'],scorers:['RNA_SEQ'],results:{},pending:new Set(),logs:[],tables:new Map()};
-let tableCounter=0;
-function notice(id,text,kind='error',focus=false){const el=$(id);el.className='notice '+kind;el.textContent=text;if(focus){el.focus();el.scrollIntoView({block:'center',behavior:'smooth'});}}
-function clearNotice(id){$(id).className='notice hidden';$(id).textContent='';}
-function log(method,path,status,ms){APP.logs.unshift({at:new Date().toLocaleTimeString('zh-CN',{hour12:false}),text:`${method} ${path.split('?')[0]} · ${status} · ${Math.round(ms)} ms`,ok:typeof status==='number'&&status<400});APP.logs.length=Math.min(APP.logs.length,100);renderLogs();}
-function renderLogs(){$('logs').innerHTML=APP.logs.map(l=>`<div class="logline ${l.ok?'success':'error'}"><time>${E(l.at)}</time><span>${E(l.text)}</span></div>`).join('')||'<span class="muted">暂无调用记录</span>';}
-async function api(path,{method='GET',body}={}){const started=performance.now();let response;try{response=await fetch(path,{method,headers:body!==undefined?{'Content-Type':'application/json'}:{},body:body!==undefined?JSON.stringify(body):undefined,cache:'no-store',credentials:'same-origin'});}catch{log(method,path,'连接失败',performance.now()-started);throw new Error('无法连接本机后端，请运行 server.py 并通过 http://127.0.0.1:8000 打开页面。');}log(method,path,response.status,performance.now()-started);let data;try{data=await response.json();}catch{throw new Error('后端没有返回有效 JSON，请检查服务是否正常启动。');}if(!response.ok){const detail=data.detail;const text=Array.isArray(detail)?detail.map(x=>(x.loc||[]).slice(1).join('.')+'：'+x.msg).join('；'):typeof detail==='string'?detail:'请求失败，请检查参数或连接状态。';const error=new Error(text);error.status=response.status;throw error;}return data;}
-function supported(){return Object.values(APP.health?.sequence_lengths?.supported||{a:16384,b:131072,c:524288,d:1048576});}
-function fillLengths(){const prior=$('interval-width').value;const lengths=Object.entries(APP.health?.sequence_lengths?.supported||{SEQUENCE_LENGTH_16KB:16384,SEQUENCE_LENGTH_100KB:131072,SEQUENCE_LENGTH_500KB:524288,SEQUENCE_LENGTH_1MB:1048576});$('interval-width').innerHTML=lengths.map(([k,v])=>`<option value="${v}">${E(k.replace('SEQUENCE_LENGTH_',''))} · ${number(v)} bp</option>`).join('');$('interval-width').value=supported().includes(Number(prior))?prior:'1048576';updateInputHints();}
-async function refreshHealth(){try{APP.health=await api('/api/health');$('service-status').textContent=APP.health.sdk_available?`SDK ${APP.health.sdk_version} · 本地在线`:'本地在线 · SDK 不可用';$('service-status').dataset.ready=String(APP.health.sdk_available);$('key-status').textContent=APP.health.api_key_configured?'Key 已配置':'Key 未配置';$('key-status').dataset.ready=String(APP.health.api_key_configured);$('service-details').innerHTML=`<dt>SDK</dt><dd>${APP.health.sdk_available?E(APP.health.sdk_version):'未安装或无法加载'}</dd><dt>API Key</dt><dd>${APP.health.api_key_configured?'已配置（不回显）':'未配置'}</dd><dt>连接方式</dt><dd>gRPC TLS → gdmscience.googleapis.com:443</dd><dt>模态 / 打分器</dt><dd>${(APP.health.output_types||[]).length} / ${(APP.health.scorers||[]).length}</dd><dt>序列长度</dt><dd>${supported().map(number).join(' / ')} bp</dd>`;fillLengths();renderChips();if(!APP.health.sdk_available)notice('global-status','AlphaGenome SDK 不可用。请安装 requirements.txt 中的依赖后重启服务。','warn');else clearNotice('global-status');updateRunState();return true;}catch(e){APP.health=null;$('service-status').textContent='本机服务离线';$('service-status').dataset.ready='false';$('key-status').textContent='Key 状态未知';notice('global-status',e.message,'error');updateRunState();return false;}}
-function updateRunState(){const pending=APP.pending.size>0;document.querySelectorAll('#prediction-form button,#prediction-form input,#prediction-form select,#prediction-form textarea').forEach(el=>{el.disabled=pending||Boolean(el.closest('[hidden]'));});$('save-key').disabled=pending;$('clear-key').disabled=pending;$('metadata-run').disabled=pending;$('load-terms').disabled=pending;$('run-button').textContent=pending?'请求执行中，请稍候':MODES[APP.mode][2];$('run-status').textContent=pending?'SDK 调用中；关闭页面不会取消远端计算':APP.health?.api_key_configured?'已配置 Key · 可运行':'请先点击右上角配置 API Key';}
-function goto(view){if(!(view in MODES)&&!['metadata','settings','log'].includes(view))view='interval';if(view in MODES){APP.mode=view;const isVariant=view==='variant'||view==='score';$('mode-title').textContent=MODES[view][0];$('mode-description').textContent=MODES[view][1];document.querySelectorAll('.interval-only').forEach(el=>el.hidden=view!=='interval');document.querySelectorAll('.variant-only').forEach(el=>el.hidden=!isVariant);document.querySelectorAll('.score-only').forEach(el=>el.hidden=view!=='score');document.querySelectorAll('.prediction-only').forEach(el=>el.hidden=view==='score');$('coordinate-fields').hidden=view==='sequence';$('sequence-fields').hidden=view!=='sequence';$('width-field').hidden=view==='interval';$('example-row').hidden=view==='sequence';$('ontology-card').hidden=view==='score';$('output-heading').textContent=view==='score'?'推荐变异打分器':'输出模态';$('output-limit').textContent=view==='score'?'最多选 3 个打分器':'最多选 3 项';$('output-hint').textContent=view==='score'?'*_ACTIVE 返回活性等位水平；其他评分也不一定有正负方向，请参阅对应定义。':'预览最多展示前 12 条轨道；完整返回范围以响应标注为准。';renderChips();renderTerms();clearNotice('workspace-alert');renderResult();updateRunState();}
-$('workspace').hidden=!(view in MODES);['metadata','settings','log'].forEach(v=>$(v+'-view').hidden=v!==view);document.querySelectorAll('nav [data-goto]').forEach(b=>{b.classList.toggle('active',b.dataset.goto===view);if(b.dataset.goto===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});if(location.hash!=='#'+view)history.replaceState(null,'','#'+view);updateRunState();requestAnimationFrame(redrawPlots);}
-document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.goto)));window.addEventListener('hashchange',()=>goto(location.hash.slice(1)));
-function renderChips(){const score=APP.mode==='score',selected=score?APP.scorers:APP.outputs,available=score?(APP.health?.scorers||['RNA_SEQ']):(APP.health?.output_types||FALLBACK_OUTPUTS);$('output-chips').setAttribute('aria-label',score?'打分器':'输出模态');$('output-chips').innerHTML=available.map(o=>`<button type="button" class="chip" aria-pressed="${selected.includes(o)}" data-output="${E(o)}">${E(o)}</button>`).join('');$('output-chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{const name=b.dataset.output;const list=APP.mode==='score'?APP.scorers:APP.outputs;if(list.includes(name))list.splice(list.indexOf(name),1);else if(list.length>=3){notice('workspace-alert',APP.mode==='score'?'单次最多选择 3 个打分器，请先移除一项。':'单次最多选择 3 个模态，请先移除一项。','warn',true);return;}else list.push(name);b.setAttribute('aria-pressed',String(list.includes(name)));renderTerms();});}
-function getCatalog(){return APP.meta[$('organism').value]||null;}
-function renderTerms(){const catalog=getCatalog();let terms=catalog?.ontology_terms||($('organism').value==='HOMO_SAPIENS'?PRESETS:[]);if(catalog&&APP.outputs.length){const allowed=new Set(APP.outputs.flatMap(o=>catalog.per_type?.[o]?.ontology_terms||[]));terms=terms.filter(t=>allowed.has(t.curie));}$('term-source').textContent=catalog?`来源：当前物种真实元数据 · ${terms.length} 个匹配术语（至少一个所选模态支持）`:'来源：官方教程少量预设，尚未核实当前模态可用性';const q=$('term-search').value.trim().toLowerCase();const filtered=terms.filter(t=>(t.curie+' '+t.label+' '+(t.aliases||[]).join(' ')).toLowerCase().includes(q)&&!APP.terms.includes(t.curie)).slice(0,100);$('term-list').innerHTML=filtered.map(t=>`<button type="button" class="term-option" data-term="${E(t.curie)}"><code>${E(t.curie)}</code><span>${E(t.label||'')}</span></button>`).join('')||'<p class="hint" style="padding:6px">无匹配项；可获取当前物种元数据，或手动输入 CURIE。</p>';$('term-list').querySelectorAll('button').forEach(b=>b.onclick=()=>addTerm(b.dataset.term));$('selected-terms').innerHTML=APP.terms.map(t=>`<button type="button" class="tag" data-remove="${E(t)}" aria-label="移除 ${E(t)}">${E(t)} <span aria-hidden="true">×</span></button>`).join('')||'<span class="hint">尚未选择组织</span>';$('selected-terms').querySelectorAll('button').forEach(b=>b.onclick=()=>{APP.terms=APP.terms.filter(t=>t!==b.dataset.remove);renderTerms();});}
-function addTerm(term){term=term.trim().toUpperCase();if(!/^(UBERON|CL|CLO|EFO|NTR):\d+$/.test(term)){notice('workspace-alert','本体编号格式示例：UBERON:0001157。','warn',true);return;}if(APP.terms.includes(term))return;if(APP.terms.length>=8){notice('workspace-alert','最多选择 8 个组织，请先移除一项。','warn',true);return;}APP.terms.push(term);$('custom-term').value='';renderTerms();}
-$('add-term').onclick=()=>addTerm($('custom-term').value);$('custom-term').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addTerm(e.target.value);}};$('term-search').oninput=renderTerms;
-$('organism').onchange=()=>{APP.terms=[];renderTerms();};
-function updateInputHints(){const width=Number($('interval-end').value)-Number($('interval-start').value);$('computed-width').value=Number.isFinite(width)?number(width)+' bp':'—';$('width-hint').textContent=supported().includes(width)?'符合 SDK 支持的输入长度':'请选择受支持的区间宽度';const seq=$('sequence').value.replace(/\s/g,'');$('sequence-hint').textContent=`原始序列：${number(seq.length)} bp`+($('pad-sequence').checked?` · 将填充到 ${number($('interval-width').value)} bp`:' · 不填充，长度需符合 SDK 要求');}
-['interval-start','interval-end','sequence','interval-width','pad-sequence'].forEach(id=>$(id).addEventListener('input',updateInputHints));
-$('example-button').onclick=()=>{$('organism').value='HOMO_SAPIENS';$('chromosome').value='chr22';$('interval-start').value=35677410;$('interval-end').value=36725986;$('position').value=36201698;$('reference-bases').value='A';$('alternate-bases').value='C';$('interval-width').value=1048576;APP.outputs=['RNA_SEQ'];APP.scorers=['RNA_SEQ'];APP.terms=['UBERON:0001157'];renderChips();renderTerms();updateInputHints();};
-function getRequest(){const mode=APP.mode,base={organism:$('organism').value};if(mode!=='score'){if(!APP.outputs.length)throw new Error('至少选择一个输出模态。');base.outputs=[...APP.outputs];base.ontology_terms=[...APP.terms];base.max_points=Number($('max-points').value);base.aggregation=$('aggregation').value;if(!base.ontology_terms.length&&!(base.outputs.length===1&&base.outputs[0]==='SPLICE_SITES'))throw new Error('请至少选择一个组织，避免不加限制地请求全部轨道。');}
-if(mode==='sequence'){base.sequence=$('sequence').value.replace(/\s/g,'').toUpperCase();base.interval_width=Number($('interval-width').value);base.pad_to_length=$('pad-sequence').checked;if(!/^[ACGTN]+$/.test(base.sequence))throw new Error('序列不能为空且只能包含 A/C/G/T/N，不接受 FASTA 标题。');if(base.pad_to_length){if(base.sequence.length>base.interval_width)throw new Error('序列长于选定的填充目标，不能自动截断。');}else if(!supported().includes(base.sequence.length))throw new Error('序列长度必须为 '+supported().map(number).join('、')+' bp；或明确勾选 N 填充。');return base;}
-base.chromosome=$('chromosome').value.trim();if(!base.chromosome)throw new Error('染色体不能为空。');if(mode==='interval'){base.start=Number($('interval-start').value);base.end=Number($('interval-end').value);if(!Number.isSafeInteger(base.start)||!Number.isSafeInteger(base.end)||base.start<0||base.end<=base.start)throw new Error('区间起止必须为有效整数，且 end > start ≥ 0。');if(!supported().includes(base.end-base.start))throw new Error('区间宽度不受支持，必须为 '+supported().map(number).join('、')+' bp。');}else{base.position=Number($('position').value);base.reference_bases=$('reference-bases').value.trim().toUpperCase();base.alternate_bases=$('alternate-bases').value.trim().toUpperCase();base.interval_width=Number($('interval-width').value);if(!Number.isSafeInteger(base.position)||base.position<1)throw new Error('变异位置为 1-based，必须大于等于 1。');if(!/^[ACGTN]+$/.test(base.reference_bases)||!/^[ACGTN]+$/.test(base.alternate_bases))throw new Error('REF / ALT 只能包含 A/C/G/T/N，不能为空。');if(base.reference_bases===base.alternate_bases)throw new Error('REF 与 ALT 相同，请输入实际变异。');if(mode==='score'){if(!APP.scorers.length)throw new Error('至少选择一个打分器。');base.scorers=[...APP.scorers];base.max_rows=Number($('max-rows').value);}}return base;}
-$('prediction-form').onsubmit=async e=>{e.preventDefault();if(APP.pending.size)return;clearNotice('workspace-alert');let body;try{body=getRequest();if(!APP.health?.sdk_available)throw new Error('本机 SDK 不可用，请先检查连接设置。');if(!APP.health?.api_key_configured)throw new Error('请先点击右上角配置 API Key，再运行预测。');}catch(err){notice('workspace-alert',err.message,'warn',true);return;}const mode=APP.mode;APP.pending.add(mode);APP.results[mode]=null;updateRunState();$('result').innerHTML='<div class="loading"><span class="spinner" aria-hidden="true"></span>正在等待真实 API 响应，请勿重复提交。</div>';try{const started=performance.now();const data=await api(MODES[mode][3],{method:'POST',body});APP.results[mode]={data,ms:performance.now()-started,indel:mode==='variant'&&body.reference_bases.length!==body.alternate_bases.length};if(APP.mode===mode)renderResult();}catch(err){if(APP.mode===mode){$('result').innerHTML='<div class="notice error">本次请求失败，没有生成新预测结果。</div>';notice('workspace-alert',err.message,'error',true);}}finally{APP.pending.delete(mode);updateRunState();}};
+const $ = id => document.getElementById(id);
+const E = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const number = n => Number(n).toLocaleString('zh-CN');
+const finite = v => typeof v === 'number' && Number.isFinite(v);
+const fmt = v => v == null ? '—' : finite(v) ? (Math.abs(v) < .0001 && v !== 0 ? v.toExponential(5) : Number(v.toPrecision(7)).toString()) : String(v);
+const MODES = {
+  interval: ['区间预测', '选择一段基因组，查看指定组织中的表达、染色质与剪接信号。', '开始区间预测', '/api/predict/interval'],
+  variant: ['变异对比', '比较变异前后的预测信号，观察一处碱基变化可能带来的影响。', '开始变异对比', '/api/predict/variant'],
+  score: ['变异打分', '用官方推荐打分器，评估变异对基因表达和调控信号的影响。', '开始变异打分', '/api/score/variant'],
+  sequence: ['序列预测', '粘贴你的 DNA 序列，预测指定组织中的分子信号。', '开始序列预测', '/api/predict/sequence']
+};
+const OUTPUTS = {
+  RNA_SEQ: ['RNA 表达', '基因转录水平'],
+  CAGE: ['转录起始', 'CAGE 信号'],
+  PROCAP: ['新生转录', 'PRO-cap 信号'],
+  DNASE: ['染色质开放性', 'DNase 信号'],
+  ATAC: ['染色质可及性', 'ATAC 信号'],
+  CHIP_HISTONE: ['组蛋白修饰', '表观遗传标记'],
+  CHIP_TF: ['转录因子结合', '调控蛋白结合'],
+  SPLICE_SITES: ['剪接位点', '供体与受体位点'],
+  SPLICE_SITE_USAGE: ['剪接位点使用', '位点使用水平'],
+  SPLICE_JUNCTIONS: ['剪接连接', '外显子连接信号'],
+  CONTACT_MAPS: ['染色质接触', '三维接触矩阵'],
+  POLYADENYLATION: ['多聚腺苷酸化', '转录本末端加工']
+};
+const outputName = name => OUTPUTS[name]?.[0] || (name.endsWith('_ACTIVE') ? (OUTPUTS[name.slice(0,-7)]?.[0] || name.slice(0,-7)) + ' · 活性' : name);
+const outputDescription = name => OUTPUTS[name]?.[1] || (name.endsWith('_ACTIVE') ? '活性等位水平' : '官方推荐打分器');
+const FALLBACK_OUTPUTS = Object.keys(OUTPUTS).filter(n => n !== 'POLYADENYLATION');
+const PRESETS = [
+  {curie:'UBERON:0001157',label:'横结肠',aliases:['colon transverse']},
+  {curie:'UBERON:0002048',label:'肺',aliases:['lung']},
+  {curie:'UBERON:0000955',label:'脑',aliases:['brain']},
+  {curie:'UBERON:0001114',label:'肝右叶',aliases:['right liver lobe']},
+  {curie:'CL:0000084',label:'T 细胞',aliases:['T cell']}
+];
+const COLUMN_LABELS = {raw_score:'原始分数',quantile_score:'分位数分数',gene_name:'基因名称',gene_id:'基因编号',gene_type:'基因类型',strand:'链方向',track_name:'轨道名称',track:'轨道',name:'名称',variant_scorer:'打分器',ontology_curie:'组织编号',ontology_terms:'组织数',output_type:'预测类型',n_tracks:'轨道数',curie:'本体编号',label:'组织名称',n_labels:'名称数量',chromosome:'染色体',start:'起点（含）',end:'终点（不含）',REF:'参考值',ALT:'替代值',value:'预测值'};
+const AGGREGATIONS = {mean:'均值',max:'最大值',sum:'求和'};
+const APP = {mode:'interval',view:'interval',health:null,meta:{},terms:['UBERON:0001157'],outputs:['RNA_SEQ'],scorers:['RNA_SEQ'],results:{},pending:new Set(),logs:[]};
+let tableCounter = 0;
+function notice(id,text,kind='error',focus=false) {
+  const el=$(id); el.className='notice '+kind; el.textContent=text;
+  if (focus) { el.focus(); el.scrollIntoView({block:'center'}); }
+}
+function clearNotice(id) { $(id).className='notice hidden'; $(id).textContent=''; }
+function inputError(text,field) { const error=new Error(text); error.field=field; throw error; }
+function showInputError(error) {
+  notice('workspace-alert',error.message,'warn',!error.field);
+  if (error.field) { $(error.field).setAttribute('aria-invalid','true'); $(error.field).focus(); }
+}
+function getCatalog() { return APP.meta[$('organism').value] || null; }
+function termName(curie) { return PRESETS.find(t=>t.curie===curie)?.label || getCatalog()?.ontology_terms?.find(t=>t.curie===curie)?.label || curie; }
+function requestName(method,path) {
+  const clean=path.split('?')[0];
+  if (clean==='/api/key') return method==='DELETE'?'清除密钥':'验证密钥';
+  if (clean==='/api/health') return '检查连接';
+  if (clean==='/api/metadata') return '加载组织目录';
+  return Object.values(MODES).find(m=>m[3]===clean)?.[0] || '接口请求';
+}
+function log(method,path,status,ms) {
+  APP.logs.unshift({at:new Date().toLocaleTimeString('zh-CN',{hour12:false}),name:requestName(method,path),path:path.split('?')[0],status,ms:Math.round(ms),ok:typeof status==='number'&&status<400});
+  APP.logs.length=Math.min(APP.logs.length,100); renderLogs();
+}
+function renderLogs() {
+  $('logs').innerHTML=APP.logs.map(l=>`<div class="logline ${l.ok?'success':'error'}"><time>${E(l.at)}</time><div>${E(l.name)} <span class="log-status">· ${l.ok?'成功':'失败'} ${E(l.status)}</span><div class="log-path">${E(l.path)}</div></div><small>${number(l.ms)} 毫秒</small></div>`).join('') || '<p class="muted" style="margin:0">暂无调用记录。运行预测或检查连接后会显示在这里。</p>';
+}
+async function api(path,{method='GET',body}={}) {
+  const started=performance.now();
+  let response;
+  try { response=await fetch(path,{method,headers:body!==undefined?{'Content-Type':'application/json'}:{},body:body!==undefined?JSON.stringify(body):undefined,cache:'no-store',credentials:'same-origin'}); }
+  catch { log(method,path,'连接失败',performance.now()-started); throw new Error('无法连接本机服务。请运行 python server.py，保持终端打开后重新检查连接。'); }
+  log(method,path,response.status,performance.now()-started);
+  let data;
+  try { data=await response.json(); } catch { throw new Error('本机服务没有返回有效数据，请检查终端中的服务状态。'); }
+  if (!response.ok) { const error=new Error(typeof data.detail==='string'?data.detail:'请求参数不合法，请检查输入的类型和范围。'); error.status=response.status; throw error; }
+  return data;
+}
+function supported() { return Object.values(APP.health?.sequence_lengths?.supported || {a:16384,b:131072,c:524288,d:1048576}); }
+function fillLengths() {
+  const prior=Number($('interval-width').value);
+  $('interval-width').innerHTML=supported().map(v=>`<option value="${v}">${number(v)} 碱基</option>`).join('');
+  $('interval-width').value=supported().includes(prior)?prior:supported().includes(1048576)?1048576:supported()[0];
+  updateInputHints();
+}
+function updateConnectionGuide() {
+  const h=APP.health;
+  $('setup-banner').hidden=Boolean(h?.sdk_available&&h?.api_key_configured);
+  $('setup-title').textContent=!h?'先启动本机服务':!h.sdk_available?'还差一步：安装模型依赖':'先连接你的 AlphaGenome 账户';
+  $('setup-description').textContent=!h?'检查本地终端是否正在运行服务，然后重新检查连接。':!h.sdk_available?'可以先填写参数。安装依赖并重启服务后，就能连接官方模型。':'配置一次访问密钥，即可使用预测功能。也可以先填写参数。';
+  $('setup-action').textContent=!h||!h.sdk_available?'查看连接说明':'配置密钥';
+}
+async function refreshHealth() {
+  try {
+    APP.health=await api('/api/health');
+    const h=APP.health;
+    $('service-status').textContent=h.sdk_available?'本机服务已就绪':'本机在线 · 待安装依赖';
+    $('service-status').dataset.ready=String(h.sdk_available);
+    $('key-status').textContent=h.api_key_configured?'密钥已配置':'配置密钥';
+    $('service-details').innerHTML=`<dt>本机服务</dt><dd>已连接</dd><dt>模型依赖</dt><dd>${h.sdk_available?'已安装 · '+E(h.sdk_version):'未安装或无法加载'}</dd><dt>访问密钥</dt><dd>${h.api_key_configured?'已配置，不回显':'未配置'}</dd><dt>连接目标</dt><dd>Google 官方模型服务</dd><dt>预测 / 打分类型</dt><dd>${(h.output_types||[]).length} / ${(h.scorers||[]).length} 种</dd><dt>支持输入长度</dt><dd>${supported().map(number).join(' / ')} 碱基</dd>`;
+    fillLengths(); renderChips(); clearNotice('global-status');
+  } catch (error) {
+    APP.health=null; $('service-status').textContent='本机服务未连接'; $('service-status').dataset.ready='false'; $('key-status').textContent='检查连接';
+    $('service-details').innerHTML='<dt>本机服务</dt><dd>未连接，请先启动服务后重新检查。</dd>';
+    notice('global-status',error.message);
+  }
+  updateConnectionGuide(); updateRunState();
+  if (APP.view==='settings'&&!APP.health?.sdk_available) $('installation').open=true;
+  return Boolean(APP.health);
+}
+function updateSummary() {
+  const selected=APP.mode==='score'?APP.scorers:APP.outputs;
+  const names=selected.length?selected.map(outputName).join('、'):'未选择预测类型';
+  const tissue=APP.mode==='score'?'':APP.terms.length?` · ${APP.terms.length===1?termName(APP.terms[0]):APP.terms.length+' 个组织'}`:' · 未选组织';
+  $('run-summary').textContent=($('organism').value==='HOMO_SAPIENS'?'人类':'小鼠')+' · '+names+tissue;
+  $('output-count').textContent=`已选 ${selected.length} / 3`;
+}
+function updateRunState() {
+  const pending=APP.pending.size>0;
+  document.querySelectorAll('#prediction-form button,#prediction-form input,#prediction-form select,#prediction-form textarea').forEach(el=>{ el.disabled=pending||Boolean(el.closest('[hidden]')); });
+  ['save-key','clear-key','metadata-run','metadata-organism','refresh-status','api-key','persist-key','show-key','example-button'].forEach(id=>{ $(id).disabled=pending; });
+  $('run-label').textContent=pending?'请求执行中…':!APP.health?.sdk_available?'检查连接':!APP.health.api_key_configured?'先配置密钥':MODES[APP.mode][2];
+  $('run-status').textContent=pending?'请勿重复提交；关闭页面不会取消远端计算。':!APP.health?.sdk_available?'安装依赖并启动服务后即可运行。':!APP.health.api_key_configured?'参数已保留，配置密钥后即可运行。':'点击后向 Google 发送所填数据，可能需要数分钟。';
+  $('prediction-form').setAttribute('aria-busy',String(pending)); updateSummary();
+}
+function goto(view) {
+  if (!Object.hasOwn(MODES,view)&&!['metadata','settings','log'].includes(view)) view='interval';
+  APP.view=view;
+  if (Object.hasOwn(MODES,view)) {
+    APP.mode=view;
+    const isVariant=view==='variant'||view==='score';
+    $('mode-title').textContent=MODES[view][0]; $('mode-description').textContent=MODES[view][1];
+    document.querySelectorAll('.interval-only').forEach(el=>{ el.hidden=view!=='interval'; });
+    document.querySelectorAll('.variant-only').forEach(el=>{ el.hidden=!isVariant; });
+    document.querySelectorAll('.score-only').forEach(el=>{ el.hidden=view!=='score'; });
+    document.querySelectorAll('.prediction-only').forEach(el=>{ el.hidden=view==='score'; });
+    $('coordinate-fields').hidden=view==='sequence'; $('sequence-fields').hidden=view!=='sequence'; $('example-button').hidden=view==='sequence';
+    $('ontology-card').hidden=view==='score'; $('score-explanation').hidden=view!=='score';
+    $('width-label').textContent=view==='sequence'?'填充目标长度':'预测长度';
+    $('input-badge').textContent=view==='sequence'?'自定义序列':isVariant?'单个变异':'参考基因组';
+    $('output-heading').textContent=view==='score'?'选择打分器':'想观察什么？';
+    $('output-description').textContent=view==='score'?'使用官方推荐打分器，最多选择 3 项。':'选择预测信号，单次最多 3 项。';
+    $('output-hint').textContent=view==='score'?'「活性」打分器返回活性等位水平，不同打分器并非统一尺度。原始名称可在选项提示中查看。':'不确定怎么选？先试「RNA 表达」。将指针放在选项上可查看官方名称。';
+    renderChips(); renderTerms(); updateInputHints(); clearNotice('workspace-alert'); renderResult();
+  }
+  $('workspace').hidden=!Object.hasOwn(MODES,view);
+  ['metadata','settings','log'].forEach(v=>{ $(v+'-view').hidden=v!==view; });
+  document.querySelectorAll('nav [data-goto]').forEach(b=>{ b.classList.toggle('active',b.dataset.goto===view); if(b.dataset.goto===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current'); });
+  if(location.hash!=='#'+view) history.replaceState(null,'','#'+view);
+  if(view==='settings'&&!APP.health?.sdk_available) $('installation').open=true;
+  updateRunState(); requestAnimationFrame(redrawPlots);
+}
+function renderChips() {
+  const score=APP.mode==='score',selected=score?APP.scorers:APP.outputs,available=score?(APP.health?.scorers||['RNA_SEQ']):(APP.health?.output_types||FALLBACK_OUTPUTS);
+  $('output-chips').setAttribute('aria-label',score?'打分器':'预测信号');
+  $('output-chips').innerHTML=available.map(o=>`<button type="button" class="chip" aria-pressed="${selected.includes(o)}" data-output="${E(o)}" title="${E(o+' · '+outputDescription(o))}"><strong>${E(outputName(o))}</strong><small>${E(outputDescription(o))}</small></button>`).join('');
+  $('output-chips').querySelectorAll('button').forEach(b=>{ b.onclick=()=>{
+    const name=b.dataset.output,list=APP.mode==='score'?APP.scorers:APP.outputs;
+    if(list.includes(name)) list.splice(list.indexOf(name),1);
+    else if(list.length>=3){notice('workspace-alert','单次最多选择 3 项，请先取消一项。','warn',true);return;}
+    else list.push(name);
+    b.setAttribute('aria-pressed',String(list.includes(name))); clearNotice('workspace-alert'); renderTerms(); updateSummary();
+  }; });
+  updateRunState();
+}
+function renderTerms() {
+  const catalog=getCatalog();
+  let terms=catalog?.ontology_terms||($('organism').value==='HOMO_SAPIENS'?PRESETS:[]),allowed=null;
+  if(catalog&&APP.outputs.length){allowed=new Set(APP.outputs.flatMap(o=>catalog.per_type?.[o]?.ontology_terms||[]));terms=terms.filter(t=>allowed.has(t.curie));}
+  $('term-source').textContent=catalog?`已加载当前物种目录 · ${terms.length} 个组织至少被一种所选信号支持`:'当前为示例预设；加载目录后可确认实际支持范围。';
+  const query=$('term-search').value.trim().toLowerCase();
+  const matched=terms.filter(t=>(termName(t.curie)+' '+t.curie+' '+t.label+' '+(t.aliases||[]).join(' ')).toLowerCase().includes(query)&&!APP.terms.includes(t.curie));
+  $('term-list').innerHTML=matched.slice(0,100).map(t=>`<button type="button" class="term-option" data-term="${E(t.curie)}" title="${E(t.curie+' · '+t.label)}"><span>${E(termName(t.curie))}</span><span aria-hidden="true">+</span></button>`).join('')||'<p class="hint">没有匹配项。可加载目录，或按组织编号添加。</p>';
+  if(matched.length>100)$('term-list').insertAdjacentHTML('beforeend','<p class="hint">仅显示前 100 项，请输入更具体的名称筛选。</p>');
+  $('term-list').querySelectorAll('button').forEach(b=>{b.onclick=()=>addTerm(b.dataset.term);});
+  $('selected-terms').innerHTML=`<span class="selected-label">已选 ${APP.terms.length}/8</span>`+APP.terms.map(t=>`<button type="button" class="tag" data-remove="${E(t)}" title="${E(t)}" aria-label="移除${E(termName(t))}">${E(termName(t))}<span aria-hidden="true">×</span></button>`).join('');
+  $('selected-terms').querySelectorAll('button').forEach(b=>{b.onclick=()=>{APP.terms=APP.terms.filter(t=>t!==b.dataset.remove);renderTerms();};});
+  const unsupported=allowed?APP.terms.filter(t=>!allowed.has(t)):[];
+  $('term-warning').hidden=!unsupported.length;
+  $('term-warning').textContent=unsupported.length?'所选目录中未找到：'+unsupported.map(termName).join('、')+'。请确认或重新选择组织。':'';
+  updateRunState();
+}
+function addTerm(term) {
+  term=term.trim().toUpperCase();
+  if(!/^(UBERON|CL|CLO|EFO|NTR):\d+$/.test(term)){notice('workspace-alert','组织编号格式不正确，例如 UBERON:0001157。','warn',true);return;}
+  if(APP.terms.includes(term))return;
+  if(APP.terms.length>=8){notice('workspace-alert','最多选择 8 个组织，请先移除一项。','warn',true);return;}
+  APP.terms.push(term);$('custom-term').value='';clearNotice('workspace-alert');renderTerms();
+}
+function updateChromosomes() {
+  const count=$('organism').value==='MUS_MUSCULUS'?19:22;
+  $('chromosomes').innerHTML=Array.from({length:count},(_,i)=>'chr'+(i+1)).concat(['chrX','chrY']).map(c=>`<option value="${c}"></option>`).join('');
+}
+function updateInputHints() {
+  const width=Number($('interval-width').value),start=$('interval-start').value===''?NaN:Number($('interval-start').value),validStart=Number.isSafeInteger(start)&&start>=0;
+  $('interval-end').value=validStart?start+width:'';
+  const sequence=$('sequence').value.replace(/\s/g,'');
+  $('sequence-hint').textContent=`已输入 ${number(sequence.length)} 个碱基`+($('pad-sequence').checked?` · 将居中填充到 ${number(width)} 个碱基`:' · 保留原始长度');
+  const variant=APP.mode==='variant'||APP.mode==='score';
+  $('coordinate-note').textContent=APP.mode==='sequence'?'横轴对应模型输入位置；不填充时，使用序列实际长度。':variant?'位置从 1 开始计数，模型以变异为中心取区间。请自行确认参考碱基与基因组一致。':'坐标从 0 开始计数，终点按预测长度自动计算。';
+  $('ruler-marker').hidden=!variant;
+  $('locus-title').textContent=APP.mode==='sequence'?'DNA':$('chromosome').value.trim()||'未选染色体';
+  const length=APP.mode==='sequence'&&!$('pad-sequence').checked?sequence.length:width;
+  $('locus-size').textContent=number(length)+' 碱基';
+  if(variant){
+    $('locus-start').textContent='参考 '+($('reference-bases').value.trim().toUpperCase()||'—');
+    $('locus-middle').textContent='位置 '+($('position').value?number($('position').value):'—');
+    $('locus-end').textContent='替代 '+($('alternate-bases').value.trim().toUpperCase()||'—');
+  }else{
+    $('locus-start').textContent=APP.mode==='sequence'?'0':validStart?number(start):'—';
+    $('locus-middle').textContent='输入范围';
+    $('locus-end').textContent=APP.mode==='sequence'?number(length):validStart?number(start+width):'—';
+  }
+  updateSummary();
+}
+function getRequest() {
+  const mode=APP.mode,base={organism:$('organism').value};
+  if(mode!=='score'){
+    if(!APP.outputs.length)inputError('请至少选择一种想观察的信号。');
+    base.outputs=[...APP.outputs];base.ontology_terms=[...APP.terms];base.max_points=Number($('max-points').value);base.aggregation=$('aggregation').value;
+    if(!base.ontology_terms.length&&!(base.outputs.length===1&&base.outputs[0]==='SPLICE_SITES'))inputError('请至少选择一个组织；也可点击「加载可用组织」查询。','term-search');
+  }
+  if(mode==='sequence'){
+    base.sequence=$('sequence').value.replace(/\s/g,'').toUpperCase();base.interval_width=Number($('interval-width').value);base.pad_to_length=$('pad-sequence').checked;
+    if(!/^[ACGTN]+$/.test(base.sequence))inputError('请输入仅含 A、C、G、T、N 的序列，不要包含 FASTA 标题。','sequence');
+    if(base.pad_to_length){if(base.sequence.length>base.interval_width)inputError('序列超过所选填充长度，请选择更长的长度；不会自动截断。','interval-width');}
+    else if(!supported().includes(base.sequence.length))inputError('序列长度须为 '+supported().map(number).join('、')+' 个碱基；如需补齐，请明确勾选 N 填充。','sequence');
+    return base;
+  }
+  base.chromosome=$('chromosome').value.trim();
+  if(!base.chromosome)inputError('请填写染色体，例如 chr22。','chromosome');
+  if(mode==='interval'){
+    base.start=Number($('interval-start').value);base.end=Number($('interval-end').value);
+    if(!$('interval-start').value||!Number.isSafeInteger(base.start)||!Number.isSafeInteger(base.end)||base.start<0||base.end<=base.start)inputError('起点必须为大于或等于 0 的整数。','interval-start');
+    if(!supported().includes(base.end-base.start))inputError('区间长度不受支持，请重新选择预测长度。','interval-width');
+  }else{
+    base.position=Number($('position').value);base.reference_bases=$('reference-bases').value.trim().toUpperCase();base.alternate_bases=$('alternate-bases').value.trim().toUpperCase();base.interval_width=Number($('interval-width').value);
+    if(!Number.isSafeInteger(base.position)||base.position<1)inputError('变异位置从 1 开始计数，请输入正整数。','position');
+    if(!/^[ACGTN]+$/.test(base.reference_bases))inputError('参考碱基只能包含 A、C、G、T、N，不能为空。','reference-bases');
+    if(!/^[ACGTN]+$/.test(base.alternate_bases))inputError('替代碱基只能包含 A、C、G、T、N，不能为空。','alternate-bases');
+    if(base.reference_bases===base.alternate_bases)inputError('参考与替代碱基相同，请输入实际变异。','alternate-bases');
+    if(mode==='score'){if(!APP.scorers.length)inputError('请至少选择一个打分器。');base.scorers=[...APP.scorers];base.max_rows=Number($('max-rows').value);}
+  }
+  return base;
+}
+const loadingMarkup='<div class="loading"><span class="spinner" aria-hidden="true"></span>正在等待官方模型返回结果<p>可能需要数分钟，请勿重复提交。关闭页面不会取消远端计算。</p></div>';
+$('prediction-form').onsubmit=async event=>{
+  event.preventDefault();if(APP.pending.size)return;
+  if(!APP.health?.sdk_available||!APP.health.api_key_configured){goto('settings');return;}
+  clearNotice('workspace-alert');document.querySelectorAll('[aria-invalid="true"]').forEach(el=>el.removeAttribute('aria-invalid'));
+  let body;try{body=getRequest();}catch(error){showInputError(error);return;}
+  const mode=APP.mode,summary=$('run-summary').textContent;
+  APP.pending.add(mode);APP.results[mode]=null;updateRunState();$('result').innerHTML=loadingMarkup;
+  try{
+    const started=performance.now(),data=await api(MODES[mode][3],{method:'POST',body});
+    APP.results[mode]={data,summary,ms:performance.now()-started,indel:mode==='variant'&&body.reference_bases.length!==body.alternate_bases.length};
+    if(APP.mode===mode){renderResult();if(APP.view===mode)$('result').scrollIntoView({block:'start'});}
+  }catch(error){
+    APP.results[mode]={error:error.message};
+    if(APP.mode===mode){renderResult();notice('workspace-alert',error.message,'error',APP.view===mode);}
+  }finally{APP.pending.delete(mode);updateRunState();}
+};
 async function fetchMetadata(org){const data=await api('/api/metadata?organism='+encodeURIComponent(org));APP.meta[org]=data;renderTerms();return data;}
-$('load-terms').onclick=async()=>{if(APP.pending.size)return;APP.pending.add('metadata');updateRunState();try{await fetchMetadata($('organism').value);clearNotice('workspace-alert');}catch(e){notice('workspace-alert',e.message,'error',true);}finally{APP.pending.delete('metadata');updateRunState();}};
-$('metadata-run').onclick=async()=>{if(APP.pending.size)return;APP.pending.add('metadata');updateRunState();$('metadata-result').innerHTML='<div class="loading"><span class="spinner"></span>获取元数据…</div>';try{const data=await fetchMetadata($('metadata-organism').value);$('metadata-result').innerHTML='<div class="card"><h3>各模态支持范围</h3><div id="metadata-types"></div></div><div class="card"><h3>可用组织 / 细胞类型</h3><div id="metadata-terms"></div></div>';createTable($('metadata-types'),{columns:['output_type','n_tracks','ontology_terms'],rows:Object.entries(data.per_type||{}).map(([name,v])=>({output_type:name,n_tracks:v.n_tracks,ontology_terms:(v.ontology_terms||[]).length}))});createTable($('metadata-terms'),{columns:['curie','label','n_labels'],rows:data.ontology_terms||[]});}catch(e){$('metadata-result').innerHTML=`<div class="notice error">${E(e.message)}</div>`;}finally{APP.pending.delete('metadata');updateRunState();}};
+$('load-terms').onclick=async()=>{
+  if(APP.pending.size)return;
+  if(!APP.health?.sdk_available||!APP.health.api_key_configured){goto('settings');return;}
+  APP.pending.add('metadata');updateRunState();$('load-terms').textContent='正在加载…';
+  try{await fetchMetadata($('organism').value);clearNotice('workspace-alert');}
+  catch(error){notice('workspace-alert',error.message,'error',true);}
+  finally{APP.pending.delete('metadata');$('load-terms').textContent='加载可用组织';updateRunState();}
+};
+$('metadata-run').onclick=async()=>{
+  if(APP.pending.size)return;
+  if(!APP.health?.sdk_available||!APP.health.api_key_configured){goto('settings');return;}
+  const org=$('metadata-organism').value;APP.pending.add('metadata');updateRunState();
+  $('metadata-result').innerHTML='<div class="loading"><span class="spinner" aria-hidden="true"></span>正在加载组织目录…</div>';
+  try{
+    const data=await fetchMetadata(org);
+    $('metadata-result').innerHTML=`<p class="result-summary">当前目录：<strong>${org==='HOMO_SAPIENS'?'人类 · hg38':'小鼠 · mm10'}</strong></p><div class="card"><h3 style="margin-bottom:15px">各类信号的支持范围</h3><div id="metadata-types"></div></div><div class="card"><h3 style="margin-bottom:15px">可用组织与细胞</h3><div id="metadata-terms"></div></div>`;
+    createTable($('metadata-types'),{columns:['output_type','n_tracks','ontology_terms'],rows:Object.entries(data.per_type||{}).map(([name,v])=>({output_type:outputName(name),n_tracks:v.n_tracks,ontology_terms:(v.ontology_terms||[]).length}))});
+    createTable($('metadata-terms'),{columns:['curie','label','n_labels'],rows:data.ontology_terms||[]});
+  }catch(error){$('metadata-result').innerHTML=`<div class="notice error">${E(error.message)}</div>`;}
+  finally{APP.pending.delete('metadata');updateRunState();}
+};
+$('metadata-organism').onchange=()=>{$('metadata-result').innerHTML='<div class="notice">已切换物种，请点击「加载组织目录」查询，避免沿用上一物种的数据。</div>';};
+$('key-form').onsubmit=async event=>{
+  event.preventDefault();if(APP.pending.size)return;
+  const key=$('api-key').value.trim();if(!key){notice('settings-alert','请粘贴你的访问密钥。','warn',true);return;}
+  clearNotice('settings-alert');APP.pending.add('key');updateRunState();$('save-key').textContent='正在验证…';
+  try{
+    const response=await api('/api/key',{method:'POST',body:{api_key:key,persist:$('persist-key').checked}});
+    resetKeyInput();clearSessionData();await refreshHealth();
+    notice('settings-alert',response.validated?'密钥验证成功。点击「返回预测」，已填写的参数还在。':'密钥已保存，但尚未验证。请先安装模型依赖并重启服务。',response.validated?'success':'warn');
+  }catch(error){notice('settings-alert',error.message,'error',true);}
+  finally{APP.pending.delete('key');$('save-key').textContent='保存并验证';updateRunState();}
+};
+function resetKeyInput(){$('api-key').value='';$('api-key').type='password';$('show-key').textContent='显示';$('show-key').setAttribute('aria-pressed','false');}
+function clearSessionData(){APP.meta={};APP.results={};renderTerms();renderResult();$('metadata-result').innerHTML='<div class="notice">连接配置已更新，请重新加载组织目录。</div>';}
+$('clear-key').onclick=async()=>{
+  if(APP.pending.size||!confirm('清除当前进程与本地文件中的密钥？系统环境变量不会被修改。'))return;
+  APP.pending.add('key');updateRunState();
+  try{await api('/api/key',{method:'DELETE'});resetKeyInput();clearSessionData();await refreshHealth();notice('settings-alert','密钥已清除。如使用环境变量配置，重启服务后仍会加载该变量。','success');}
+  catch(error){notice('settings-alert',error.message,'error',true);}
+  finally{APP.pending.delete('key');updateRunState();}
+};
 $('show-key').onclick=()=>{const show=$('api-key').type==='password';$('api-key').type=show?'text':'password';$('show-key').textContent=show?'隐藏':'显示';$('show-key').setAttribute('aria-pressed',String(show));};
-$('key-form').onsubmit=async e=>{e.preventDefault();if(APP.pending.size)return;const key=$('api-key').value.trim();if(!key){notice('settings-alert','请粘贴 API Key。','warn',true);return;}clearNotice('settings-alert');APP.pending.add('key');updateRunState();$('save-key').textContent='验证中…';try{const response=await api('/api/key',{method:'POST',body:{api_key:key,persist:$('persist-key').checked}});$('api-key').value='';$('api-key').type='password';$('show-key').textContent='显示';$('show-key').setAttribute('aria-pressed','false');APP.meta={};APP.results={};renderTerms();await refreshHealth();notice('settings-alert',response.validated?'API Key 已通过真实元数据调用验证。选择左侧功能即可使用。':'Key 已配置，但未完成有效性验证，请检查 SDK 状态。',response.validated?'success':'warn');}catch(err){notice('settings-alert',err.message,'error',true);}finally{APP.pending.delete('key');$('save-key').textContent='保存并验证';updateRunState();}};
-$('clear-key').onclick=async()=>{if(APP.pending.size||!confirm('清除当前进程及本地 .apikey 文件中的 Key？系统环境变量不会被修改。'))return;APP.pending.add('key');updateRunState();try{await api('/api/key',{method:'DELETE'});APP.meta={};APP.results={};$('api-key').value='';renderTerms();await refreshHealth();notice('settings-alert','Key 已清除。若使用环境变量预置，重新启动服务时仍会加载该变量。','success');}catch(e){notice('settings-alert',e.message,'error',true);}finally{APP.pending.delete('key');updateRunState();}};
-$('refresh-status').onclick=refreshHealth;$('clear-log').onclick=()=>{APP.logs=[];renderLogs();};
-function download(name,content,type){const blob=new Blob([content],{type});const a=document.createElement('a');const url=URL.createObjectURL(blob);a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-function csvValue(v){let s=v==null?'':String(v);if(typeof v==='string'&&/^[=+@\-\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}
-function createTable(host,table){const id='table-'+(++tableCounter);const rows=table.rows||[];const state={rows:[...rows],columns:table.columns||Object.keys(rows[0]||{}),page:0,sort:null,dir:1};APP.tables.set(id,state);host.innerHTML=`<div class="barline"><small>收到 ${number(rows.length)} / ${number(table.total_rows??rows.length)} 行${table.truncated?' · 后端已截断，导出仅含本次返回数据':''}</small><button type="button" data-csv>导出 CSV</button></div><div class="table-wrap" tabindex="0" role="region" aria-label="结果表格，可横向滚动"><table id="${id}"><thead></thead><tbody></tbody></table></div><div class="pagination"><button type="button" data-prev>上一页</button><span data-page></span><button type="button" data-next>下一页</button></div>`;host.querySelector('[data-csv]').onclick=()=>download('alphagenome-results.csv','\ufeff'+[state.columns.map(c=>csvValue(table.column_labels?.[c]||c)).join(','),...state.rows.map(r=>state.columns.map(c=>csvValue(r[c])).join(','))].join('\r\n'),'text/csv;charset=utf-8');host.querySelector('[data-prev]').onclick=()=>{state.page--;render();};host.querySelector('[data-next]').onclick=()=>{state.page++;render();};function render(){const pages=Math.max(1,Math.ceil(rows.length/100));state.page=Math.max(0,Math.min(state.page,pages-1));$(id).querySelector('thead').innerHTML='<tr>'+state.columns.map((c,i)=>`<th aria-sort="${state.sort===c?(state.dir===1?'ascending':'descending'):'none'}"><button type="button" data-column="${i}">${E(table.column_labels?.[c]||c)}${state.sort===c?(state.dir===1?' ↑':' ↓'):''}</button></th>`).join('')+'</tr>';$(id).querySelector('tbody').innerHTML=state.rows.slice(state.page*100,(state.page+1)*100).map(r=>'<tr>'+state.columns.map(c=>`<td class="${finite(r[c])?'numeric':''}" title="${E(r[c])}">${E(fmt(r[c]))}</td>`).join('')+'</tr>').join('')||`<tr><td colspan="${Math.max(1,state.columns.length)}">没有结果行</td></tr>`;host.querySelector('[data-page]').textContent=`第 ${state.page+1} / ${pages} 页 · 每页最多 100 行`;host.querySelector('[data-prev]').disabled=state.page===0;host.querySelector('[data-next]').disabled=state.page===pages-1;$(id).querySelectorAll('[data-column]').forEach(b=>b.onclick=()=>{const col=state.columns[Number(b.dataset.column)];state.dir=state.sort===col?-state.dir:-1;state.sort=col;state.page=0;state.rows.sort((a,b)=>{const x=a[col],y=b[col];if(x==null)return y==null?0:1;if(y==null)return -1;return (finite(x)&&finite(y)?x-y:String(x).localeCompare(String(y),'zh'))*state.dir;});render();});}render();}
-function renderResult(){plotObserver.disconnect();const result=APP.results[APP.mode];$('result').innerHTML='';APP.tables.clear();if(!result){$('result').innerHTML=APP.pending.has(APP.mode)?'<div class="loading"><span class="spinner"></span>当前功能请求执行中…</div>':'<div class="card"><h3>结果预览</h3><p class="muted" style="margin:0">尚无本次会话的预测数据。配置 Key、填写参数后运行。</p></div>';return;}const d=result.data;$('result').innerHTML=`<div class="result-toolbar"><h3>API 响应结果</h3><button type="button" id="download-json">导出响应 JSON</button></div><p class="result-summary">${E(d.variant||d.interval||'自定义序列')} · ${Math.round(result.ms/1000)} 秒${d.input_length?' · 模型输入 '+number(d.input_length)+' bp':''}</p><div id="result-content"></div><details><summary>查看原始 JSON（预览最多 100,000 字符；导出为完整响应）</summary><pre class="raw" id="raw-result"></pre></details>`;$('raw-result').textContent=JSON.stringify(d,null,2).slice(0,100000);$('download-json').onclick=()=>download('alphagenome-'+APP.mode+'.json',JSON.stringify(d,null,2),'application/json');const host=$('result-content');if(d.note){const note=document.createElement('div');note.className='notice warn';note.textContent=d.note;host.append(note);}if(d.padded_with_N){const note=document.createElement('div');note.className='notice warn';note.textContent=`序列已用 N 填充：原长 ${number(d.original_length??0)} bp，左侧填充 ${number(d.padding_left_bp??0)} bp。横轴为填充后的模型输入坐标。`;host.append(note);}if(APP.mode==='score'){if(!d.tables?.length){host.innerHTML+='<div class="notice">本次未返回匹配的评分行；这不等于“没有生物学效应”。</div>';return;}for(const t of d.tables){const card=document.createElement('div');card.className='card';card.innerHTML=`<h3>${E(t.scorer||'变异效应评分')}</h3><p class="hint">${E(t.source||'')} · raw_score 为打分器输出，并非统一的概率尺度。</p>`;host.append(card);if(t.error){const err=document.createElement('p');err.textContent=t.error;card.append(err);}else{const box=document.createElement('div');card.append(box);createTable(box,t);}}return;}
-if(APP.mode==='variant'){if(result.indel){host.innerHTML+='<div class="notice warn">插入/缺失：这里展示未对齐的 REF、ALT 原始预测，分别绘图。请勿把相同横坐标解释为对齐后的同一碱基。</div>';renderModalities(host,d.reference,{label:'REF（未对齐）',marker:d.variant_position-1});renderModalities(host,d.alternate,{label:'ALT（未对齐）'});}else renderModalities(host,d.reference,{alternate:d.alternate,marker:d.variant_position-1});}else renderModalities(host,d.modalities);requestAnimationFrame(redrawPlots);}
-const plotObserver=new ResizeObserver(entries=>{for(const e of entries)if(e.target.clientWidth>0)drawCanvas(e.target);});
-function makeCanvas(host,config,heat=false){const canvas=document.createElement('canvas');canvas.setAttribute('role','img');canvas.setAttribute('aria-label',config.label||'模型预测预览；数值可从响应 JSON 导出');canvas._config=config;canvas._heat=heat;if(heat)canvas.className='heatmap';host.append(canvas);plotObserver.observe(canvas);}
-function redrawPlots(){document.querySelectorAll('canvas').forEach(c=>{if(c.clientWidth)drawCanvas(c);});}
-function renderModalities(host,modalities,opts={}){const entries=Object.entries(modalities||{});if(!entries.length){const empty=document.createElement('p');empty.className='muted';empty.textContent='SDK 未返回预测模态。';host.append(empty);}for(const [name,d] of entries){const card=document.createElement('div');card.className='plot-card';card.innerHTML=`<div class="plot-head"><strong>${E(opts.label?opts.label+' · ':'')}${E(name)}</strong></div>`;host.append(card);const alt=opts.alternate?.[name];if(!d||!d.available){const warning=document.createElement('p');warning.className='notice warn';warning.textContent=d?.reason||'该模态没有数据';card.append(warning);continue;}if(opts.alternate&&!alt?.available){const warning=document.createElement('div');warning.className='notice warn';warning.textContent='ALT 数据不可用，只展示 REF；不能据此作等位比较。';card.append(warning);}if(d.kind==='junctions'){const box=document.createElement('div');box.style.padding='14px';card.append(box);box.innerHTML=`<p class="hint">剪接连接坐标为 0-based 半开；不将连接当作连续轨迹。预览 ${d.shown_tracks??d.labels?.length??0} / ${d.total_tracks??d.labels?.length??0} 条轨道。</p>`;const table=document.createElement('div');box.append(table);createTable(table,{...d,column_labels:Object.fromEntries((d.labels||[]).map((label,i)=>['track_'+i,label]))});if(alt?.available&&alt.kind==='junctions'){const p=document.createElement('p');p.className='track-label';p.textContent='ALT 剪接连接（独立返回，行序不代表与 REF 配对）';card.append(p);const boxAlt=document.createElement('div');boxAlt.style.padding='14px';card.append(boxAlt);createTable(boxAlt,{...alt,column_labels:Object.fromEntries((alt.labels||[]).map((label,i)=>['track_'+i,label]))});}continue;}if(d.kind==='matrix'){const hint=document.createElement('p');hint.className='track-label';hint.textContent=`仅预览轨道 ${d.track_index??0}：${d.selected_track_label||'第一轨道'} / 共 ${d.n_tracks||1} 条 · ${d.returned_points}×${d.returned_points} 均值聚合。REF 与 ALT 热图使用相同色阶。`;card.append(hint);const maxes=[d.values,alt?.values].filter(Boolean).flat(2).filter(finite);const scale=extent(maxes);const split=document.createElement('div');split.className=alt?.kind==='matrix'?'split':'';card.append(split);for(const [label,mat] of [['REF',d],['ALT',alt]]){if(!mat?.values)continue;const box=document.createElement('div');split.append(box);const title=document.createElement('p');title.className='track-label';title.textContent=opts.alternate?label:opts.label||name;box.append(title);makeCanvas(box,{matrix:mat.values,scale,label:title.textContent+' 接触矩阵'},true);}continue;}if(d.kind==='scalars'){const valueLabel=opts.alternate?'REF':opts.label||'value';const rows=(d.values||[]).map((v,i)=>{const label=d.labels?.[i]||String(i),j=(alt?.labels||[]).indexOf(label);return {track:label,[valueLabel]:v,...(alt?.kind==='scalars'?{ALT:j>=0?alt.values[j]:null}:{})};});const box=document.createElement('div');box.style.padding='14px';card.append(box);createTable(box,{rows,columns:alt?.kind==='scalars'?['track',valueLabel,'ALT']:['track',valueLabel]});continue;}if(d.kind!=='tracks'){const p=document.createElement('p');p.textContent='该结果类型请通过响应 JSON 查看。';card.append(p);continue;}const hint=document.createElement('p');hint.className='track-label';hint.textContent=`原始 ${number(d.shape?.[0]||0)} 位置 × ${d.total_tracks??d.shape?.[1]??0} 轨道 · ${d.resolution_bp} bp 原始分辨率 · ${d.aggregation||'mean'} 聚合 / 每轨道 ${d.returned_points} 点${d.tracks_truncated?' · 已截断，仅预览前 '+d.shown_tracks+' 轨道':''}`;card.append(hint);const labels=d.labels||[];for(let i=0;i<Math.min(d.series?.length||0,12);i++){const label=document.createElement('p');label.className='track-label';label.textContent=labels[i]||'track '+i;card.append(label);const series=[{values:d.series[i],x:d.x,color:opts.alternate?'#bdd4e4':'#58e3b1',dashed:Boolean(opts.alternate)}];if(alt?.kind==='tracks'){const j=(alt.labels||[]).indexOf(labels[i]);if(j>=0&&alt.series[j])series.push({values:alt.series[j],x:alt.x,color:'#fa9d9d'});}makeCanvas(card,{series,start:d.start,end:d.end,marker:opts.marker,label:label.textContent+' 模型预测，降采样预览'});}const legend=document.createElement('div');legend.className='legend';legend.innerHTML=opts.alternate?'<span><i class="ref"></i>REF · 虚线</span><span><i class="alt"></i>ALT · 实线（如有匹配轨道）</span>':'<span><i></i>预测信号 · 0-based 输入坐标</span>';card.append(legend);}}
-function extent(values){let min=Infinity,max=-Infinity;for(const v of values)if(finite(v)){min=Math.min(min,v);max=Math.max(max,v);}if(!Number.isFinite(min))return [0,1];if(min===max)return [Math.min(0,min-1),max+1];return [min,max];}
-function drawCanvas(canvas){const c=canvas._config;if(!c||!canvas.clientWidth)return;const w=canvas.clientWidth,h=canvas.clientHeight,dpr=window.devicePixelRatio||1;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);if(canvas._heat){const mat=c.matrix||[],n=mat.length;if(!n)return;const [lo,hi]=c.scale||[0,1],size=Math.min(w-24,h-40),left=(w-size)/2,top=5;for(let i=0;i<n;i++)for(let j=0;j<mat[i].length;j++){const v=mat[i][j],t=finite(v)?Math.max(0,Math.min(1,(v-lo)/(hi-lo))):0;ctx.fillStyle=finite(v)?`rgb(${Math.round(14+t*78)},${Math.round(30+t*194)},${Math.round(40+t*136)})`:'#4c4258';ctx.fillRect(left+j*size/n,top+i*size/n,Math.ceil(size/n),Math.ceil(size/n));}ctx.fillStyle='#a0b3c5';ctx.font='11px Consolas';ctx.fillText('色阶 '+fmt(lo)+' → '+fmt(hi),Math.max(8,left),top+size+20);return;}const pad={l:56,r:18,t:14,b:31},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;const all=c.series.flatMap(s=>s.values||[]);let [lo,hi]=extent(all);lo=Math.min(lo,0);const xvals=c.series.flatMap(s=>s.x||[]);let [x0,x1]=extent(xvals);if(finite(c.start))x0=c.start;if(finite(c.end)&&c.end>x0)x1=c.end;const X=x=>pad.l+(x-x0)/(x1-x0)*pw,Y=y=>pad.t+ph-(y-lo)/(hi-lo)*ph;ctx.font='10px Consolas';ctx.textBaseline='middle';for(let i=0;i<4;i++){const value=lo+(hi-lo)*i/3,y=Y(value);ctx.strokeStyle='#223441';ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillStyle='#a0b3c5';ctx.textAlign='right';ctx.fillText(fmt(value),pad.l-7,y);}if(finite(c.marker)&&c.marker>=x0&&c.marker<=x1){ctx.setLineDash([3,3]);ctx.strokeStyle='#f7cb82';ctx.beginPath();ctx.moveTo(X(c.marker),pad.t);ctx.lineTo(X(c.marker),pad.t+ph);ctx.stroke();ctx.setLineDash([]);}for(const s of c.series){ctx.strokeStyle=s.color;ctx.lineWidth=1.3;ctx.setLineDash(s.dashed?[4,3]:[]);ctx.beginPath();let started=false;for(let i=0;i<s.values.length;i++){const v=s.values[i],x=s.x?.[i];if(!finite(v)||!finite(x)){started=false;continue;}if(started)ctx.lineTo(X(x),Y(v));else ctx.moveTo(X(x),Y(v));started=true;}ctx.stroke();ctx.setLineDash([]);}ctx.fillStyle='#a0b3c5';ctx.textBaseline='top';for(let i=0;i<3;i++){const x=x0+(x1-x0)*i/2;ctx.textAlign=i===0?'left':i===2?'right':'center';ctx.fillText(number(Math.round(x)),X(x),pad.t+ph+9);}}
+$('refresh-status').onclick=async()=>{if(APP.pending.size)return;APP.pending.add('health');updateRunState();try{await refreshHealth();}finally{APP.pending.delete('health');updateRunState();}};
+$('example-button').onclick=()=>{
+  $('organism').value='HOMO_SAPIENS';$('chromosome').value='chr22';$('interval-start').value=35677410;$('position').value=36201698;$('reference-bases').value='A';$('alternate-bases').value='C';$('interval-width').value=1048576;
+  APP.outputs=['RNA_SEQ'];APP.scorers=['RNA_SEQ'];APP.terms=['UBERON:0001157'];$('term-search').value='';updateChromosomes();renderChips();renderTerms();updateInputHints();
+  notice('workspace-alert','已填入官方人类示例：chr22，A → C，横结肠 RNA 表达。尚未发起预测。','success');
+};
+$('organism').onchange=()=>{APP.terms=[];$('term-search').value='';updateChromosomes();renderTerms();updateSummary();};
+$('add-term').onclick=()=>addTerm($('custom-term').value);
+$('custom-term').onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();addTerm(event.target.value);}};
+$('term-search').oninput=renderTerms;
+$('term-search').onkeydown=event=>{if(event.key==='Enter')event.preventDefault();};
+['interval-start','sequence','interval-width','pad-sequence','chromosome','position','reference-bases','alternate-bases'].forEach(id=>$(id).addEventListener('input',()=>{$(id).removeAttribute('aria-invalid');updateInputHints();}));
+$('setup-action').onclick=()=>goto('settings');$('back-to-workspace').onclick=()=>goto(APP.mode);$('clear-log').onclick=()=>{APP.logs=[];renderLogs();};
+document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.goto)));
+window.addEventListener('hashchange',()=>{if(location.hash!=='#main')goto(location.hash.slice(1));});
+function download(name,content,type){const blob=new Blob([content],{type}),a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function csvValue(value){let text=value==null?'':String(value);if(typeof value==='string'&&/^[=+@\-\t\r]/.test(text))text="'"+text;return '"'+text.replace(/"/g,'""')+'"';}
+function createTable(host,table){
+  const id='table-'+(++tableCounter),rows=table.rows||[],state={rows:[...rows],columns:table.columns||Object.keys(rows[0]||{}),page:0,sort:null,dir:1};
+  const label=column=>table.column_labels?.[column]||COLUMN_LABELS[column]||column;
+  host.innerHTML=`<div class="barline"><small>已返回 ${number(rows.length)} / ${number(table.total_rows??rows.length)} 行${table.truncated?' · 已截断，导出也仅包含这些行':''}</small><button type="button" data-csv>导出表格 · CSV</button></div><div class="table-wrap" tabindex="0" role="region" aria-label="结果表格，可横向滚动"><table id="${id}"><thead></thead><tbody></tbody></table></div><div class="pagination"><button type="button" data-prev>上一页</button><span data-page></span><button type="button" data-next>下一页</button></div>`;
+  host.querySelector('[data-csv]').onclick=()=>download('alphagenome-results.csv','\ufeff'+[state.columns.map(c=>csvValue(label(c))).join(','),...state.rows.map(r=>state.columns.map(c=>csvValue(r[c])).join(','))].join('\r\n'),'text/csv;charset=utf-8');
+  host.querySelector('[data-prev]').onclick=()=>{state.page--;render();};host.querySelector('[data-next]').onclick=()=>{state.page++;render();};
+  function render(){
+    const pages=Math.max(1,Math.ceil(rows.length/100));state.page=Math.max(0,Math.min(state.page,pages-1));
+    $(id).querySelector('thead').innerHTML='<tr>'+state.columns.map((c,i)=>`<th aria-sort="${state.sort===c?(state.dir===1?'ascending':'descending'):'none'}"><button type="button" data-column="${i}" title="${E(c)}">${E(label(c))}${state.sort===c?(state.dir===1?' ↑':' ↓'):''}</button></th>`).join('')+'</tr>';
+    $(id).querySelector('tbody').innerHTML=state.rows.slice(state.page*100,(state.page+1)*100).map(r=>'<tr>'+state.columns.map(c=>`<td class="${finite(r[c])?'numeric':''}" title="${E(r[c])}">${E(fmt(r[c]))}</td>`).join('')+'</tr>').join('')||`<tr><td colspan="${Math.max(1,state.columns.length)}">没有结果行</td></tr>`;
+    host.querySelector('[data-page]').textContent=`第 ${state.page+1} / ${pages} 页 · 每页最多 100 行`;host.querySelector('[data-prev]').disabled=state.page===0;host.querySelector('[data-next]').disabled=state.page===pages-1;
+    $(id).querySelectorAll('[data-column]').forEach(b=>{b.onclick=()=>{
+      const col=state.columns[Number(b.dataset.column)];state.dir=state.sort===col?-state.dir:-1;state.sort=col;state.page=0;
+      state.rows.sort((a,b)=>{const x=a[col],y=b[col];if(x==null)return y==null?0:1;if(y==null)return -1;return(finite(x)&&finite(y)?x-y:String(x).localeCompare(String(y),'zh'))*state.dir;});render();
+    };});
+  }
+  render();
+}
+function renderResult(){
+  plotObserver.disconnect();const result=APP.results[APP.mode];$('result').innerHTML='';
+  if(!result){$('result').innerHTML=APP.pending.has(APP.mode)?loadingMarkup:'<div class="empty-result"><div class="empty-icon"><svg class="icon" aria-hidden="true"><use href="#i-score"/></svg></div><div><h3>预测结果将在这里呈现</h3><p>填写上方参数后运行；首次使用可点击「填入官方示例」。当前没有预测数据。</p></div></div>';return;}
+  if(result.error){$('result').innerHTML=`<div class="notice error">本次请求失败：${E(result.error)}<br>没有生成新结果。调整参数或检查连接后可重新运行。</div>`;return;}
+  const d=result.data,mode=APP.mode;
+  $('result').innerHTML=`<div class="result-toolbar"><h3>${E(MODES[mode][0])}结果</h3><button type="button" id="download-json">导出本次结果 · JSON</button></div><p class="result-summary"><strong>${E(result.summary||'')}</strong><br>${E(d.variant||d.interval||'自定义序列')} · 耗时 ${Math.max(1,Math.round(result.ms/1000))} 秒${d.input_length?' · 输入 '+number(d.input_length)+' 碱基':''}</p><p class="result-help">图表为降采样预览；导出包含本次后端响应，不是完整原始模型数据。</p><div id="result-content"></div><details><summary>查看响应数据（JSON）</summary><p class="hint">此处最多显示 100,000 个字符；导出文件保留本次响应的全部字段。</p><pre class="raw" id="raw-result"></pre></details>`;
+  $('raw-result').textContent=JSON.stringify(d,null,2).slice(0,100000);$('download-json').onclick=()=>download('alphagenome-'+mode+'.json',JSON.stringify(d,null,2),'application/json');
+  const host=$('result-content');if(d.note)appendNotice(host,d.note);
+  if(d.padded_with_N)appendNotice(host,`序列已用 N 填充：原长 ${number(d.original_length??0)} 碱基，左侧填充 ${number(d.padding_left_bp??0)} 碱基。横轴为填充后的模型输入坐标。`);
+  if(mode==='score'){
+    if(!d.tables?.length){appendNotice(host,'未返回匹配的评分行，不等于没有生物学效应。','');return;}
+    for(const t of d.tables){
+      const card=document.createElement('div');card.className='card';const title=t.source==='tidy_scores'?'变异效应评分':'变异效应评分 · 原始数据预览';
+      card.innerHTML=`<h3>${title}</h3><p class="hint">原始分数由所选打分器计算，不是统一的概率尺度。${t.source==='anndata_fallback'?'此预览未应用标准整理流程中的基因过滤。':''}</p>`;host.append(card);
+      if(t.error)appendNotice(card,t.error,'error');else{const box=document.createElement('div');box.style.marginTop='14px';card.append(box);createTable(box,t);}
+    }return;
+  }
+  if(mode==='variant'){
+    if(result.indel){appendNotice(host,'这是插入或缺失变异。参考与替代序列尚未对齐，分别绘图；相同横坐标不代表对齐后的同一碱基。');renderModalities(host,d.reference,{label:'参考序列（未对齐）',marker:d.variant_position-1});renderModalities(host,d.alternate,{label:'替代序列（未对齐）'});}
+    else renderModalities(host,d.reference,{alternate:d.alternate,marker:d.variant_position-1});
+  }else renderModalities(host,d.modalities);
+  requestAnimationFrame(redrawPlots);
+}
+function appendNotice(host,text,kind='warn'){const el=document.createElement('div');el.className='notice '+kind;el.textContent=text;host.append(el);}
+const plotObserver=new ResizeObserver(entries=>{for(const entry of entries)if(entry.target.clientWidth>0)drawCanvas(entry.target);});
+function makeCanvas(host,config,heat=false){const canvas=document.createElement('canvas');canvas.setAttribute('role','img');canvas.setAttribute('aria-label',config.label||'模型预测预览，数值可从结果文件导出');canvas._config=config;canvas._heat=heat;if(heat)canvas.className='heatmap';host.append(canvas);plotObserver.observe(canvas);}
+function redrawPlots(){document.querySelectorAll('canvas').forEach(canvas=>{if(canvas.clientWidth)drawCanvas(canvas);});}
+function renderModalities(host,modalities,opts={}){
+  const entries=Object.entries(modalities||{});if(!entries.length)appendNotice(host,'模型没有返回预测信号，请检查请求类型和组织。','');
+  for(const[name,d]of entries){
+    const card=document.createElement('div');card.className='plot-card';card.innerHTML=`<div class="plot-head"><strong>${E(opts.label?opts.label+' · ':'')}${E(outputName(name))}</strong><small>${E(name)}</small></div>`;host.append(card);
+    const alt=opts.alternate?.[name];
+    if(!d?.available){appendNotice(card,d?.reason||'该类型没有返回数据。');continue;}
+    if(opts.alternate&&!alt?.available)appendNotice(card,'替代序列数据不可用，目前只显示参考序列，不能据此比较等位效应。');
+    if(d.kind==='junctions'){
+      const box=document.createElement('div');box.className='plot-body';card.append(box);box.innerHTML=`<p class="hint" style="margin-bottom:12px">剪接坐标从 0 开始，包含起点、不含终点；预览 ${d.shown_tracks??d.labels?.length??0} / ${d.total_tracks??d.labels?.length??0} 条轨道。</p>`;
+      const table=document.createElement('div');box.append(table);createTable(table,{...d,column_labels:Object.fromEntries((d.labels||[]).map((label,i)=>['track_'+i,label]))});
+      if(alt?.available&&alt.kind==='junctions'){
+        const boxAlt=document.createElement('div');boxAlt.className='plot-body';card.append(boxAlt);boxAlt.innerHTML='<p class="hint" style="margin-bottom:12px">替代序列剪接连接：独立返回，行序不表示与参考序列逐行配对。</p>';
+        const tableAlt=document.createElement('div');boxAlt.append(tableAlt);createTable(tableAlt,{...alt,column_labels:Object.fromEntries((alt.labels||[]).map((label,i)=>['track_'+i,label]))});
+      }continue;
+    }
+    if(d.kind==='matrix'){
+      const hint=document.createElement('p');hint.className='track-label';hint.textContent=`仅预览第 ${(d.track_index??0)+1} 条轨道：${d.selected_track_label||'第一轨道'} / 共 ${d.n_tracks||1} 条 · ${d.returned_points}×${d.returned_points} 均值聚合。${opts.alternate?'两张热图使用相同色阶。':''}`;card.append(hint);
+      const scale=extent([d.values,alt?.values].filter(Boolean).flat(2)),split=document.createElement('div');if(alt?.kind==='matrix')split.className='split';card.append(split);
+      for(const[label,mat]of[['参考序列',d],['替代序列',alt]]){
+        if(!mat?.values)continue;const box=document.createElement('div');split.append(box);const title=document.createElement('p');title.className='track-label';title.textContent=opts.alternate?label:opts.label||outputName(name);box.append(title);makeCanvas(box,{matrix:mat.values,scale,label:title.textContent+'接触矩阵'},true);
+      }continue;
+    }
+    if(d.kind==='scalars'){
+      const valueLabel=opts.alternate?'REF':'value',rows=(d.values||[]).map((v,i)=>{const label=d.labels?.[i]||String(i),j=(alt?.labels||[]).indexOf(label);return{track:label,[valueLabel]:v,...(alt?.kind==='scalars'?{ALT:j>=0?alt.values[j]:null}:{})};});
+      const box=document.createElement('div');box.className='plot-body';card.append(box);if(d.tracks_truncated)appendNotice(box,`仅预览 ${d.shown_tracks} / ${d.total_tracks} 条轨道。`,'');
+      createTable(box,{rows,columns:alt?.kind==='scalars'?['track',valueLabel,'ALT']:['track',valueLabel]});continue;
+    }
+    if(d.kind!=='tracks'){appendNotice(card,'该结果类型请通过响应数据查看。','');continue;}
+    const hint=document.createElement('p');hint.className='track-label';hint.textContent=`原始 ${number(d.shape?.[0]||0)} 个位置 × ${d.total_tracks??d.shape?.[1]??0} 条轨道 · 原始分辨率 ${d.resolution_bp} 碱基 · ${AGGREGATIONS[d.aggregation]||'均值'}聚合 · 每轨道 ${number(d.returned_points)} 点${d.tracks_truncated?' · 仅显示前 '+d.shown_tracks+' 条轨道':''}`;card.append(hint);
+    const labels=d.labels||[];
+    for(let i=0;i<Math.min(d.series?.length||0,12);i++){
+      const label=document.createElement('p');label.className='track-label';label.textContent=labels[i]||'轨道 '+(i+1);card.append(label);
+      const series=[{values:d.series[i],x:d.x,color:opts.alternate?'#67758e':'#137d86',dashed:Boolean(opts.alternate)}];
+      if(alt?.kind==='tracks'){const j=(alt.labels||[]).indexOf(labels[i]);if(j>=0&&alt.series[j])series.push({values:alt.series[j],x:alt.x,color:'#6154bc'});}
+      makeCanvas(card,{series,start:d.start,end:d.end,marker:opts.marker,label:label.textContent+'模型预测，降采样预览'});
+    }
+    const legend=document.createElement('div');legend.className='legend';legend.innerHTML=opts.alternate?'<span><i class="ref"></i>参考序列 · 虚线</span><span><i class="alt"></i>替代序列 · 实线（匹配轨道时）</span>':'<span><i></i>预测信号 · 输入坐标从 0 开始</span>';card.append(legend);
+  }
+}
+function extent(values){let min=Infinity,max=-Infinity;for(const v of values)if(finite(v)){min=Math.min(min,v);max=Math.max(max,v);}if(!Number.isFinite(min))return[0,1];return min===max?[Math.min(0,min-1),max+1]:[min,max];}
+function drawCanvas(canvas){
+  const config=canvas._config;if(!config||!canvas.clientWidth)return;
+  const w=canvas.clientWidth,h=canvas.clientHeight,dpr=window.devicePixelRatio||1;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+  if(canvas._heat){
+    const matrix=config.matrix||[],n=matrix.length;if(!n)return;
+    const[lo,hi]=config.scale||[0,1],size=Math.min(w-24,h-40),left=(w-size)/2,top=5;
+    for(let i=0;i<n;i++)for(let j=0;j<matrix[i].length;j++){
+      const v=matrix[i][j],t=finite(v)?Math.max(0,Math.min(1,(v-lo)/(hi-lo))):0;
+      ctx.fillStyle=finite(v)?`rgb(${Math.round(243-t*146)},${Math.round(245-t*161)},${Math.round(250-t*62)})`:'#67758e';ctx.fillRect(left+j*size/n,top+i*size/n,Math.ceil(size/n),Math.ceil(size/n));
+    }
+    ctx.fillStyle='#67758e';ctx.font='11px "Microsoft YaHei UI",sans-serif';ctx.fillText('色阶 '+fmt(lo)+' → '+fmt(hi),Math.max(8,left),top+size+20);return;
+  }
+  const pad={l:62,r:18,t:16,b:31},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+  let[lo,hi]=extent(config.series.flatMap(s=>s.values||[]));lo=Math.min(lo,0);
+  let[x0,x1]=extent(config.series.flatMap(s=>s.x||[]));if(finite(config.start))x0=config.start;if(finite(config.end)&&config.end>x0)x1=config.end;
+  const X=x=>pad.l+(x-x0)/(x1-x0)*pw,Y=y=>pad.t+ph-(y-lo)/(hi-lo)*ph;ctx.font='10px Consolas';ctx.textBaseline='middle';
+  for(let i=0;i<4;i++){const value=lo+(hi-lo)*i/3,y=Y(value);ctx.strokeStyle='rgba(32,44,70,.09)';ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillStyle='#67758e';ctx.textAlign='right';ctx.fillText(fmt(value),pad.l-7,y);}
+  if(finite(config.marker)&&config.marker>=x0&&config.marker<=x1){ctx.setLineDash([3,3]);ctx.strokeStyle='#6154bc';ctx.beginPath();ctx.moveTo(X(config.marker),pad.t);ctx.lineTo(X(config.marker),pad.t+ph);ctx.stroke();ctx.setLineDash([]);}
+  for(const series of config.series){
+    ctx.strokeStyle=series.color;ctx.lineWidth=1.5;ctx.setLineDash(series.dashed?[4,3]:[]);ctx.beginPath();let started=false;
+    for(let i=0;i<series.values.length;i++){const value=series.values[i],x=series.x?.[i];if(!finite(value)||!finite(x)){started=false;continue;}if(started)ctx.lineTo(X(x),Y(value));else ctx.moveTo(X(x),Y(value));started=true;}
+    ctx.stroke();ctx.setLineDash([]);
+  }
+  ctx.fillStyle='#67758e';ctx.textBaseline='top';for(let i=0;i<3;i++){const x=x0+(x1-x0)*i/2;ctx.textAlign=i===0?'left':i===2?'right':'center';ctx.fillText(number(Math.round(x)),X(x),pad.t+ph+9);}
+}
 window.addEventListener('pagehide',()=>plotObserver.disconnect());
-$('chromosomes').innerHTML=Array.from({length:22},(_,i)=>'chr'+(i+1)).concat(['chrX','chrY']).map(c=>`<option value="${c}"></option>`).join('');
-fillLengths();goto(location.hash.slice(1)||'interval');refreshHealth();
+window.addEventListener('pageshow',()=>{document.querySelectorAll('canvas').forEach(canvas=>plotObserver.observe(canvas));});
+fillLengths();updateChromosomes();goto(location.hash.slice(1)||'interval');refreshHealth();
 </script>
 </body>
 </html>
